@@ -1,8 +1,9 @@
-﻿namespace MODEL.Entities
+﻿using MODEL.Concretes;
+
+namespace MODEL.Entities
 {
-    public class Branch
+    public class Branch:BaseEntity
     {
-        public int ID { get; set; }
         public string Name { get; set; }
         public string? Address { get; set; }
         public string PhoneNumber { get; set; } //todo:10 hane

@@ -1,3 +1,4 @@
+using BLL.DependencyResolvers;
 namespace MVC
 {
     public class Program
@@ -8,6 +9,15 @@ namespace MVC
 
             // Add services to the container.
             builder.Services.AddControllersWithViews();
+
+            // DbContext Service
+            builder.Services.AddDbContextService();
+
+            // Repository
+            builder.Services.AddRepositoryServices();
+
+            // Service Manager
+            builder.Services.AddManagerServices();  
 
             var app = builder.Build();
 
@@ -26,9 +36,13 @@ namespace MVC
 
             app.UseAuthorization();
 
-            app.MapControllerRoute(
-                name: "default",
-                pattern: "{controller=Home}/{action=Index}/{id?}");
+            app.UseEndpoints(endpoints => 
+            {
+                endpoints.MapControllerRoute(
+                    name: "default",
+                    pattern: "{controller=Home}/{action=Index}/{id?}"
+                    );
+            });
 
             app.Run();
         }

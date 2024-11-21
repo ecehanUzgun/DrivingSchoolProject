@@ -1,10 +1,10 @@
-﻿using MODEL.Enums;
+﻿using MODEL.Concretes;
+using MODEL.Enums;
 
 namespace MODEL.Entities
 {
-    public class Vehicle
+    public class Vehicle:BaseEntity
     {
-        public int ID { get; set; }
         public string LicensePlate { get; set; } // Plaka
         public VehicleType VehicleType { get; set; } // Araç tipi (Otomobil, Motosiklet vb.)
         public TransmissionType Transmission { get; set; } // Vites 

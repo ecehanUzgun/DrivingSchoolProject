@@ -1,8 +1,9 @@
-﻿namespace MODEL.Entities
+﻿using MODEL.Concretes;
+
+namespace MODEL.Entities
 {
-    public class Teacher
+    public class Teacher:BaseEntity
     {
-        public int ID { get; set; }
         public string Name { get; set; }
         public string Surname { get; set; }
         public string Tckn { get; set; } //11 hane
