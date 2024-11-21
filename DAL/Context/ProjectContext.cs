@@ -22,6 +22,8 @@ namespace DAL.Context
         public DbSet<Student> Students { get; set; }
         public DbSet<Vehicle> Vehicles { get; set; }
         public DbSet<Schedule> Schedules { get; set; }
+        public DbSet<TeacherBranch> TeacherBranches { get; set; }
+        public DbSet<VehicleBranch> VehicleBranches { get; set; }
 
         //Configuration
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
@@ -40,6 +42,8 @@ namespace DAL.Context
             builder.ApplyConfiguration(new StudentConfiguration());
             builder.ApplyConfiguration(new VehicleConfiguration());
             builder.ApplyConfiguration(new ScheduleConfiguration());
+            builder.ApplyConfiguration(new TeacherBranchConfiguration());
+            builder.ApplyConfiguration(new VehicleBranchConfiguration());
 
             base.OnModelCreating(builder);
         }

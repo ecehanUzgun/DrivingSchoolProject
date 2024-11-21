@@ -131,9 +131,6 @@ namespace DAL.Migrations
                     b.Property<DateTime>("BirthDate")
                         .HasColumnType("datetime2");
 
-                    b.Property<int>("BranchId")
-                        .HasColumnType("int");
-
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasMaxLength(50)
@@ -152,9 +149,22 @@ namespace DAL.Migrations
 
                     b.HasKey("ID");
 
+                    b.ToTable("Teachers");
+                });
+
+            modelBuilder.Entity("MODEL.Entities.TeacherBranch", b =>
+                {
+                    b.Property<int>("TeacherId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("BranchId")
+                        .HasColumnType("int");
+
+                    b.HasKey("TeacherId", "BranchId");
+
                     b.HasIndex("BranchId");
 
-                    b.ToTable("Teachers");
+                    b.ToTable("TeacherBranches");
                 });
 
             modelBuilder.Entity("MODEL.Entities.Vehicle", b =>
@@ -164,9 +174,6 @@ namespace DAL.Migrations
                         .HasColumnType("int");
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("ID"));
-
-                    b.Property<int>("BranchId")
-                        .HasColumnType("int");
 
                     b.Property<string>("LicensePlate")
                         .IsRequired()
@@ -181,9 +188,22 @@ namespace DAL.Migrations
 
                     b.HasKey("ID");
 
-                    b.HasIndex("BranchId");
-
                     b.ToTable("Vehicles");
+                });
+
+            modelBuilder.Entity("MODEL.Entities.VehicleBranch", b =>
+                {
+                    b.Property<int>("BranchId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("VehicleId")
+                        .HasColumnType("int");
+
+                    b.HasKey("BranchId", "VehicleId");
+
+                    b.HasIndex("VehicleId");
+
+                    b.ToTable("VehicleBranches");
                 });
 
             modelBuilder.Entity("MODEL.Entities.Schedule", b =>
@@ -191,13 +211,13 @@ namespace DAL.Migrations
                     b.HasOne("MODEL.Entities.Student", "Student")
                         .WithMany("Schedules")
                         .HasForeignKey("StudentId")
-                        .OnDelete(DeleteBehavior.Restrict)
+                        .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.HasOne("MODEL.Entities.Teacher", "Teacher")
                         .WithMany("Schedules")
                         .HasForeignKey("TeacherId")
-                        .OnDelete(DeleteBehavior.Restrict)
+                        .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.Navigation("Student");
@@ -216,35 +236,51 @@ namespace DAL.Migrations
                     b.Navigation("Branch");
                 });
 
-            modelBuilder.Entity("MODEL.Entities.Teacher", b =>
+            modelBuilder.Entity("MODEL.Entities.TeacherBranch", b =>
                 {
                     b.HasOne("MODEL.Entities.Branch", "Branch")
-                        .WithMany("Teachers")
+                        .WithMany("TeacherBranches")
                         .HasForeignKey("BranchId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
+                    b.HasOne("MODEL.Entities.Teacher", "Teacher")
+                        .WithMany("TeacherBranches")
+                        .HasForeignKey("TeacherId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
                     b.Navigation("Branch");
+
+                    b.Navigation("Teacher");
                 });
 
-            modelBuilder.Entity("MODEL.Entities.Vehicle", b =>
+            modelBuilder.Entity("MODEL.Entities.VehicleBranch", b =>
                 {
                     b.HasOne("MODEL.Entities.Branch", "Branch")
-                        .WithMany("Vehicles")
+                        .WithMany("VehicleBranches")
                         .HasForeignKey("BranchId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
+                    b.HasOne("MODEL.Entities.Vehicle", "Vehicle")
+                        .WithMany("VehicleBranches")
+                        .HasForeignKey("VehicleId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
                     b.Navigation("Branch");
+
+                    b.Navigation("Vehicle");
                 });
 
             modelBuilder.Entity("MODEL.Entities.Branch", b =>
                 {
                     b.Navigation("Students");
 
-                    b.Navigation("Teachers");
+                    b.Navigation("TeacherBranches");
 
-                    b.Navigation("Vehicles");
+                    b.Navigation("VehicleBranches");
                 });
 
             modelBuilder.Entity("MODEL.Entities.Student", b =>
@@ -255,6 +291,13 @@ namespace DAL.Migrations
             modelBuilder.Entity("MODEL.Entities.Teacher", b =>
                 {
                     b.Navigation("Schedules");
+
+                    b.Navigation("TeacherBranches");
+                });
+
+            modelBuilder.Entity("MODEL.Entities.Vehicle", b =>
+                {
+                    b.Navigation("VehicleBranches");
                 });
 #pragma warning restore 612, 618
         }

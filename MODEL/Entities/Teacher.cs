@@ -10,7 +10,6 @@
 
         //Relational Properties
         public List<Schedule> Schedules { get; set; }
-        public int BranchId { get; set; }
-        public Branch Branch { get; set; }
+        public List<TeacherBranch> TeacherBranches { get; set; }
     }
 }

@@ -16,8 +16,9 @@ namespace DAL.Configurations
 
             //PhoneNumber
             builder.Property(x => x.PhoneNumber).HasMaxLength(10).IsFixedLength().IsRequired();
-
             //[RegularExpression(@"^[0-9]{10}$", ErrorMessage = "Telefon numarası 10 haneli olmalıdır.")]
+
+
         }
     }
 }

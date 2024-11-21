@@ -14,14 +14,14 @@ namespace DAL.Configurations
             //Foreign Key - Student
             builder.HasOne(x => x.Student)
                    .WithMany(x => x.Schedules)
-                   .HasForeignKey(x => x.StudentId)
-                   .OnDelete(DeleteBehavior.Restrict); // ON DELETE CASCADE yerine RESTRICT
+                   .HasForeignKey(x => x.StudentId);
+                   //.OnDelete(DeleteBehavior.Restrict); // ON DELETE CASCADE yerine RESTRICT
 
             // Foreign Key - Teacher
             builder.HasOne(x => x.Teacher)
                    .WithMany(x => x.Schedules)
-                   .HasForeignKey(x => x.TeacherId)
-                   .OnDelete(DeleteBehavior.Restrict); // ON DELETE CASCADE yerine RESTRICT
+                   .HasForeignKey(x => x.TeacherId);
+                   //.OnDelete(DeleteBehavior.Restrict); // ON DELETE CASCADE yerine RESTRICT
         }
     }
 }

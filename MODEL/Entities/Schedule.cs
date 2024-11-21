@@ -10,9 +10,6 @@ namespace MODEL.Entities
         public Student Student { get; set; }
         public DateTime LessonDate { get; set; } 
         public TimeSpan StartTime { get; set; }     
-        public DataStatus Status { get; set; }
-        //Active planlanan ve henüz gerçekleşmemiş dersler
-        //Passive planlanmamış dersler
-        //Completed gerçekleşmiş dersler
+        public DataStatus Status { get; set; } //Active planlanan ve henüz gerçekleşmemiş dersler, Passive planlanmamış dersler, Completed gerçekleşmiş dersler
     }
 }
