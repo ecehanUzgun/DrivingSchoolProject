@@ -13,7 +13,7 @@ namespace BLL.DependencyResolvers
 
             IConfiguration? configuration = provider.GetService<IConfiguration>();
 
-            services.AddDbContext<ProjectContext>(opt => opt.UseSqlServer(configuration.GetConnectionString("EceConnection")));
+            services.AddDbContext<ProjectContext>(opt => opt.UseSqlServer(configuration.GetConnectionString("DefaultConnection")));
         }
     }
 }

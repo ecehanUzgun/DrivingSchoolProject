@@ -85,11 +85,6 @@ namespace DAL.Repository.Concretes
 
             await _context.SaveChangesAsync();
         }
-        //Kontrol et!
-        public Task UpdateAsync(Student student)
-        {
-            throw new NotImplementedException();
-        }
 
         public async Task UpdateRangeAsync(List<T> entities)
         {

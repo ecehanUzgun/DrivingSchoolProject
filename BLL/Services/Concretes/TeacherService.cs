@@ -22,7 +22,7 @@ namespace BLL.Services.Concretes
             if (!await IsTimeAvailableAsync(teacherId, date, startTime)) return false;
 
             //Öğrencinin ders hakkını kontrol et
-            var student = _studentRepository.GetById(studentId);
+            var student = await _studentRepository.GetAll().FirstOrDefaultAsync(s => s.ID == studentId);
             if (student == null || student.CourseHours <= 0) return false;
 
             //Ders programı ekle
@@ -39,7 +39,7 @@ namespace BLL.Services.Concretes
 
             //Öğrencinin ders hakkını azalt
             student.CourseHours -= 1;
-            await _scheduleRepository.UpdateAsync(student);
+            await _studentRepository.UpdateAsync(student);
 
             return true;
         }
@@ -84,7 +84,9 @@ namespace BLL.Services.Concretes
                 .Select(s => s.StartTime)
                 .ToListAsync();
 
-            return workingHours.Except(busyHours).ToList();
+            var availableHours = workingHours.Except(busyHours).ToList();
+
+            return availableHours;
         }
 
         //Ders çakışmasını kontrol et

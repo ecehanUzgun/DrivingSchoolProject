@@ -1,0 +1,126 @@
+﻿
+@{
+    ViewData["Title"] = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<h2>Ders Planlama</h2>
+
+<div class="container mt-4">
+    <!-- Öğretmen Seçimi -->
+    <div class="form-group">
+        <label for="teacherSelect">Öğretmen Seçin:</label>
+        <select id="teacherSelect" class="form-control">
+            <option value="">Öğretmen Seçin</option>
+            @foreach (var teacher in ViewBag.Teachers)
+            {
+                <option value="@teacher.ID">@teacher.Name @teacher.Surname</option>
+            }
+        </select>
+    </div>
+
+    <!-- Tarih Seçimi -->
+    <div class="form-group mt-3">
+        <label for="dateSelect">Tarih Seçin:</label>
+        <input id="dateSelect" type="text" class="form-control" placeholder="Tarih Seçin" disabled />
+    </div>
+
+    <!-- Saat Seçimi -->
+    <div class="form-group mt-3">
+        <label for="timeSelect">Saat Seçin:</label>
+        <select id="timeSelect" class="form-control" disabled>
+            <option value="">Önce tarih seçin</option>
+        </select>
+    </div>
+
+    <!-- Öğrenci Seçimi -->
+    <div class="form-group mt-3">
+        <label for="studentSelect">Öğrenci Seçin:</label>
+        <select id="studentSelect" class="form-control">
+            <option value="">Öğrenci Seçin</option>
+            @foreach (var student in ViewBag.Students)
+            {
+                <option value="@student.ID">@student.Name @student.Surname</option>
+            }
+        </select>
+    </div>
+
+    <!-- Ders Ekle Butonu -->
+    <button id="addLessonBtn" class="btn btn-primary mt-3" disabled>Ders Ata</button>
+
+    <!-- Mesaj Gösterimi -->
+    <div id="message" class="mt-3"></div>
+</div>
+
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
+<script>
+    $(document).ready(function () {
+        // Flatpickr değişkeni
+        let flatpickrInstance;
+
+        // Öğretmen seçildiğinde tarihler yüklenir
+        $("#teacherSelect").change(function () {
+            var teacherId = $(this).val();
+            var dateInput = document.getElementById("dateSelect");
+
+            if (flatpickrInstance) {
+                flatpickrInstance.destroy(); // Önceki flatpickr'yi kaldır
+            }
+
+            $("#timeSelect").empty().append('<option value="">Önce tarih seçin</option>').prop("disabled", true);
+
+            if (teacherId) {
+                $.getJSON('/LessonPlanning/GetAvailableDates', { teacherId: teacherId }, function (dates) {
+                    flatpickrInstance = flatpickr(dateInput, {
+                        enable: dates.map(date => new Date(date)), // Yalnızca uygun tarihleri etkinleştir
+                        dateFormat: "Y-m-d", // Tarih formatı
+                        onChange: function (selectedDates, dateStr) {
+                            if (selectedDates.length > 0) {
+                                loadAvailableHours(teacherId, dateStr);
+                            }
+                        }
+                    });
+                    $("#dateSelect").prop("disabled", false); // Tarih alanını aktif et
+                });
+            } else {
+                $("#dateSelect").val("").prop("disabled", true); // Tarih alanını temizle ve pasif et
+            }
+        });
+
+        // Saatlerin yüklenmesi
+        function loadAvailableHours(teacherId, date) {
+            $("#timeSelect").empty().append('<option value="">Yükleniyor...</option>').prop("disabled", true);
+
+            $.getJSON('/LessonPlanning/GetAvailableHours', { teacherId: teacherId, date: date }, function (hours) {
+                $("#timeSelect").empty().append('<option value="">Saat Seçin</option>');
+                $.each(hours, function (index, hour) {
+                    $("#timeSelect").append('<option value="' + hour + '">' + hour + '</option>');
+                });
+                $("#timeSelect").prop("disabled", false);
+            });
+        }
+
+        // Ders ekleme işlemi
+        $("#addLessonBtn").click(function () {
+            var teacherId = $("#teacherSelect").val();
+            var studentId = $("#studentSelect").val();
+            var date = $("#dateSelect").val();
+            var startTime = $("#timeSelect").val();
+
+            if (teacherId && studentId && date && startTime) {
+                $.post('/LessonPlanning/AddLesson', { teacherId: teacherId, studentId: studentId, date: date, startTime: startTime }, function (response) {
+                    $("#message").html('<div class="alert ' + (response.success ? 'alert-success' : 'alert-danger') + '">' + response.message + '</div>');
+                });
+            }
+        });
+
+        // Seçimler yapıldığında butonu aktif et
+        $("#studentSelect, #timeSelect").change(function () {
+            var isReady = $("#teacherSelect").val() && $("#studentSelect").val() && $("#dateSelect").val() && $("#timeSelect").val();
+            $("#addLessonBtn").prop("disabled", !isReady);
+        });
+    });
+</script>
+
+

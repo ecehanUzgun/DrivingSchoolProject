@@ -18,14 +18,14 @@ namespace BLL.Services.Concretes
         public async Task<bool> AddLessonAsync(int teacherId, int studentId, DateTime date, TimeSpan startTime)
         {
             // Çakışmayı kontrol et
-            var isLessonTimeAvailable = !await _repository.GetAll()
-                .AnyAsync(s => s.TeacherId == teacherId && s.LessonDate.Date == date.Date && s.StartTime == startTime);
+            var isLessonTimeAvailable = !GetAll()
+                .Any(s => s.TeacherId == teacherId && s.LessonDate.Date == date.Date && s.StartTime == startTime);
 
             if (!isLessonTimeAvailable)
                 return false;
 
             // Öğrenci kontrolü
-            var student = _studentRepository.GetById(studentId);
+            var student = await _studentRepository.GetAll().FirstOrDefaultAsync(s => s.ID == studentId);
             if (student == null || student.CourseHours <= 0)
                 return false;
 
