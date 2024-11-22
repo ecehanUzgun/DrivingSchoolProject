@@ -1,4 +1,5 @@
 ﻿using MODEL.Concretes;
+using MODEL.Entities;
 using System.Linq.Expressions;
 
 namespace DAL.Repository.Abstracts
@@ -17,5 +18,6 @@ namespace DAL.Repository.Abstracts
         Task DeleteAllAsync(List<T> entities);
         Task DestroyAsync(T entity);
         Task DestroyRangeAsync(List<T> entities);
+        Task UpdateAsync(Student student);
     }
 }

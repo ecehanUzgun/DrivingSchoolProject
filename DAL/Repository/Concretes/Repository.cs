@@ -2,6 +2,7 @@
 using DAL.Repository.Abstracts;
 using Microsoft.EntityFrameworkCore;
 using MODEL.Concretes;
+using MODEL.Entities;
 using System.Linq.Expressions;
 
 namespace DAL.Repository.Concretes
@@ -83,6 +84,11 @@ namespace DAL.Repository.Concretes
             _dbSet.Entry(originalEntity).CurrentValues.SetValues(entity);
 
             await _context.SaveChangesAsync();
+        }
+        //Kontrol et!
+        public Task UpdateAsync(Student student)
+        {
+            throw new NotImplementedException();
         }
 
         public async Task UpdateRangeAsync(List<T> entities)

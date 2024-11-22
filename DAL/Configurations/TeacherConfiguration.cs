@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using DAL.Data.FakeData;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using MODEL.Entities;
 
@@ -14,6 +15,9 @@ namespace DAL.Configurations
             builder.Property(x => x.Surname).HasMaxLength(50).IsRequired();
             //Tckn
             builder.Property(x => x.Tckn).HasMaxLength(11).IsFixedLength().IsRequired();
+
+            // Fake Data
+            builder.HasData(TeacherFakeData.GetFakeTeachers());
         }
     }
 }

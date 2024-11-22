@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using DAL.Data.FakeData;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using MODEL.Entities;
 
@@ -18,7 +19,8 @@ namespace DAL.Configurations
             builder.Property(x => x.PhoneNumber).HasMaxLength(10).IsFixedLength().IsRequired();
             //[RegularExpression(@"^[0-9]{10}$", ErrorMessage = "Telefon numarası 10 haneli olmalıdır.")]
 
-
+            // Fake Data
+            builder.HasData(BranchFakeData.GetFakeBranches());
         }
     }
 }

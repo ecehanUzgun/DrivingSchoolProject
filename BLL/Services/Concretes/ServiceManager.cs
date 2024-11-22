@@ -6,7 +6,7 @@ namespace BLL.Services.Concretes
 {
     public class ServiceManager<T> : IServiceManager<T> where T : BaseEntity
     {
-        private readonly IRepository<T> _repository;
+        protected readonly IRepository<T> _repository;
         public ServiceManager(IRepository<T> repository)
         {
             _repository = repository;
