@@ -16,33 +16,33 @@ namespace BLL.Services.Concretes
         }
 
         //Ders ekleme işlemi
-        public async Task<bool> AddLessonAsync(int teacherId, int studentId, DateTime date, TimeSpan startTime)
-        {
-            //Çakışmayı kontrol et
-            if (!await IsTimeAvailableAsync(teacherId, date, startTime)) return false;
+        //public async Task<bool> AddLessonAsync(int teacherId, int studentId, DateTime date, TimeSpan startTime)
+        //{
+        //    //Çakışmayı kontrol et
+        //    if (!await IsTimeAvailableAsync(teacherId, date, startTime)) return false;
 
-            //Öğrencinin ders hakkını kontrol et
-            var student = await _studentRepository.GetAll().FirstOrDefaultAsync(s => s.ID == studentId);
-            if (student == null || student.CourseHours <= 0) return false;
+        //    //Öğrencinin ders hakkını kontrol et
+        //    var student = await _studentRepository.GetAll().FirstOrDefaultAsync(s => s.ID == studentId);
+        //    if (student == null || student.CourseHours <= 0) return false;
 
-            //Ders programı ekle
-            var newSchedule = new Schedule
-            {
-                TeacherId = teacherId,
-                StudentId = studentId,
-                LessonDate = date,
-                StartTime = startTime,
-                Status = MODEL.Enums.DataStatus.Active
-            };
+        //    //Ders programı ekle
+        //    var newSchedule = new Schedule
+        //    {
+        //        TeacherId = teacherId,
+        //        StudentId = studentId,
+        //        LessonDate = date,
+        //        StartTime = startTime,
+        //        Status = MODEL.Enums.DataStatus.Active
+        //    };
 
-            await _scheduleRepository.CreateAsync(newSchedule);
+        //    await _scheduleRepository.CreateAsync(newSchedule);
 
-            //Öğrencinin ders hakkını azalt
-            student.CourseHours -= 1;
-            await _studentRepository.UpdateAsync(student);
+        //    //Öğrencinin ders hakkını azalt
+        //    student.CourseHours -= 1;
+        //    await _studentRepository.UpdateAsync(student);
 
-            return true;
-        }
+        //    return true;
+        //}
 
         // Öğretmenlerin listesini getirir
         public async Task<List<Teacher>> GetAllTeachersAsync()
@@ -50,43 +50,45 @@ namespace BLL.Services.Concretes
             return GetAll().ToList();
         }
 
-        // Öğretmenin müsait olduğu tarihleri getirir
+        // Müsait günler
         public async Task<List<DateTime>> GetAvailableDatesAsync(int teacherId)
         {
+            //Öğretmenin dolu günlerini getir
             var busyDates = await _scheduleRepository.GetAll()
                 .Where(s => s.TeacherId == teacherId)
                 .Select(s => s.LessonDate.Date)
                 .Distinct()
                 .ToListAsync();
-
-            var nextWeek = Enumerable.Range(0, 7)
-                .Select(offset => DateTime.Now.Date.AddDays(offset))
+            
+            //Çalışma günlerinden dolu günleri çıkar
+            var allDates = Enumerable.Range(0, 30)
+                .Select(offset => DateTime.Now.Date.AddDays(offset)) //30 gün ileriye kadar günleri kontrol et
                 .Except(busyDates)
                 .ToList();
 
-            return nextWeek;
+            return allDates;
         }
 
+        //Müsait saatler
         public async Task<List<TimeSpan>> GetAvailableHoursAsync(int teacherId, DateTime date)
         {
             var workingHours = new List<TimeSpan>
             {
                 new TimeSpan(8,0,0),
                 new TimeSpan(10,0,0),
-                new TimeSpan(11,0,0),
                 new TimeSpan(13,0,0),
-                new TimeSpan(14,0,0),
-                new TimeSpan(16,0,0)
+                new TimeSpan(15,0,0),
+                new TimeSpan(17,0,0)
             };
 
+            //Dolu saatleri getir
             var busyHours = await _scheduleRepository.GetAll()
                 .Where(s => s.TeacherId == teacherId && s.LessonDate.Date == date.Date)
                 .Select(s => s.StartTime)
                 .ToListAsync();
 
-            var availableHours = workingHours.Except(busyHours).ToList();
-
-            return availableHours;
+            //Dolu saatleri çıkararak müsait saatleri döndür
+            return workingHours.Except(busyHours).ToList();
         }
 
         //Ders çakışmasını kontrol et

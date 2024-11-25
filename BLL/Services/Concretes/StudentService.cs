@@ -21,7 +21,7 @@ namespace BLL.Services.Concretes
         //Öğrencilerin kalan ders haklarını raporlar
         public IEnumerable<Student> GetStudentsWithRemainingHours()
         {
-            return GetAll().Where(s => s.CourseHours > 0);
+            return GetAll().Where(s => s.CourseHours > 0).ToList(); //6 hakkı dolmayan öğrencileri filtrele
         }
     }
 }

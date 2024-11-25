@@ -39,9 +39,12 @@
             <option value="">Öğrenci Seçin</option>
             @foreach (var student in ViewBag.Students)
             {
-                <option value="@student.ID">@student.Name @student.Surname</option>
+                <option value="@student.ID" data-hours="@student.CourseHours">
+                    @student.Name @student.Surname (@student.CourseHours saat kaldı)
+                </option>
             }
         </select>
+
     </div>
 
     <!-- Ders Ekle Butonu -->
@@ -93,11 +96,18 @@
             $("#timeSelect").empty().append('<option value="">Yükleniyor...</option>').prop("disabled", true);
 
             $.getJSON('/LessonPlanning/GetAvailableHours', { teacherId: teacherId, date: date }, function (hours) {
-                $("#timeSelect").empty().append('<option value="">Saat Seçin</option>');
-                $.each(hours, function (index, hour) {
-                    $("#timeSelect").append('<option value="' + hour + '">' + hour + '</option>');
-                });
-                $("#timeSelect").prop("disabled", false);
+                if (hours.length > 0) {
+                    $("#timeSelect").empty().append('<option value="">Saat Seçin</option>');
+                    $.each(hours, function (index, hour) {
+                        $("#timeSelect").append('<option value="' + hour + '">' + hour + '</option>');
+                    });
+                    $("#timeSelect").prop("disabled", false);
+                } else {
+                    $("#timeSelect").empty().append('<option value="">Uygun saat yok</option>').prop("disabled", true);
+                    $("#message").html('<div class="alert alert-warning">Bu tarih için uygun saat bulunamadı.</div>');
+                }
+            }).fail(function () {
+                $("#message").html('<div class="alert alert-danger">Saat bilgisi alınırken bir hata oluştu.</div>');
             });
         }
 
@@ -109,18 +119,55 @@
             var startTime = $("#timeSelect").val();
 
             if (teacherId && studentId && date && startTime) {
-                $.post('/LessonPlanning/AddLesson', { teacherId: teacherId, studentId: studentId, date: date, startTime: startTime }, function (response) {
-                    $("#message").html('<div class="alert ' + (response.success ? 'alert-success' : 'alert-danger') + '">' + response.message + '</div>');
+                $.post('/LessonPlanning/AddLesson', { teacherId, studentId, date, startTime }, function (response) {
+                    var messageClass = response.success ? 'alert-success' : 'alert-danger';
+                    $("#message").html(`<div class="alert ${messageClass}">${response.message}</div>`);
+
+                    // Başarılı bir eklemeden sonra ders hakkını güncelle
+                    if (response.success) {
+                        let remainingHours = $(`#studentSelect option[value='${studentId}']`).data('hours');
+                        remainingHours--;
+                        $(`#studentSelect option[value='${studentId}']`).data('hours', remainingHours);
+
+                        // Ders hakkı biterse listeden kaldır
+                        if (remainingHours <= 0) {
+                            $(`#studentSelect option[value='${studentId}']`).remove();
+                        }
+                    }
+                }).fail(function () {
+                    $("#message").html('<div class="alert alert-danger">Bir hata oluştu, lütfen tekrar deneyin.</div>');
                 });
             }
         });
+
 
         // Seçimler yapıldığında butonu aktif et
         $("#studentSelect, #timeSelect").change(function () {
             var isReady = $("#teacherSelect").val() && $("#studentSelect").val() && $("#dateSelect").val() && $("#timeSelect").val();
             $("#addLessonBtn").prop("disabled", !isReady);
         });
+            
+        // Öğrenci seçimi kontrolü
+        $("#studentSelect").change(function () {
+            var studentId = $(this).val();
+            if (studentId) {
+                // Kalan ders hakkını kontrol et
+                $.getJSON('/LessonPlanning/GetStudentCourseHours', { studentId: studentId }, function (response) {
+                    if (response.courseHours <= 0) {
+                        $("#message").html('<div class="alert alert-danger">Bu öğrencinin ders hakkı kalmamış.</div>');
+                        $("#addLessonBtn").prop("disabled", true);
+                    } else {
+                        $("#message").empty();
+                        $("#addLessonBtn").prop("disabled", false);
+                    }
+                });
+            } else {
+                $("#addLessonBtn").prop("disabled", true);
+            }
+        });
+
     });
 </script>
+
 
 

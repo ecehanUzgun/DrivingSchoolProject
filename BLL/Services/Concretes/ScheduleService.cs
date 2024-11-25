@@ -18,18 +18,18 @@ namespace BLL.Services.Concretes
         public async Task<bool> AddLessonAsync(int teacherId, int studentId, DateTime date, TimeSpan startTime)
         {
             // Çakışmayı kontrol et
-            var isLessonTimeAvailable = !GetAll()
-                .Any(s => s.TeacherId == teacherId && s.LessonDate.Date == date.Date && s.StartTime == startTime);
+            var isTimeAvailable = !await _repository.GetAll()
+                .AnyAsync(s => s.TeacherId == teacherId && s.LessonDate == date && s.StartTime == startTime);
 
-            if (!isLessonTimeAvailable)
+            if (!isTimeAvailable)
                 return false;
 
             // Öğrenci kontrolü
-            var student = await _studentRepository.GetAll().FirstOrDefaultAsync(s => s.ID == studentId);
+            var student = _studentRepository.GetById(studentId);
             if (student == null || student.CourseHours <= 0)
                 return false;
 
-            // Yeni ders ekle
+            // Yeni ders oluştur
             var newSchedule = new Schedule
             {
                 TeacherId = teacherId,
@@ -39,14 +39,15 @@ namespace BLL.Services.Concretes
                 Status = DataStatus.Active
             };
 
-            await CreateAsync(newSchedule);
+            await _repository.CreateAsync(newSchedule);
 
             // Öğrencinin ders hakkını azalt
-            student.CourseHours -= 1;
+            student.CourseHours--;
             await _studentRepository.UpdateAsync(student);
 
             return true;
         }
+
 
         public IEnumerable<Schedule> GetAllSchedules()
         {

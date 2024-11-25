@@ -14,7 +14,7 @@ namespace BLL.Services.Abstracts
         Task<List<TimeSpan>> GetAvailableHoursAsync(int teacherId, DateTime date);
 
         //Ders programına kayıt işlemi
-        Task<bool> AddLessonAsync(int teacherId, int studentId, DateTime date, TimeSpan startTime);
+        //Task<bool> AddLessonAsync(int teacherId, int studentId, DateTime date, TimeSpan startTime);
 
         //Belirli bir öğretmen için ders programını kontrol eder
         Task<bool> IsTimeAvailableAsync(int teacherId, DateTime date, TimeSpan startTime);
