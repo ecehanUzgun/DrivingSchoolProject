@@ -3,9 +3,10 @@
     ViewData["Title"] = "Index";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
-<h2>Ders Planlama</h2>
+
 
 <div class="container mt-4">
+    <h2>Ders Planlama</h2>
     <!-- Öğretmen Seçimi -->
     <div class="form-group">
         <label for="teacherSelect">Öğretmen Seçin:</label>
@@ -59,77 +60,91 @@
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
 <script>
     $(document).ready(function () {
-        // Flatpickr değişkeni
+        // Eğer öğretmen seçilmişse ve tarih mevcutsa tekrar saatleri yükle
         let flatpickrInstance;
 
-        // Öğretmen seçildiğinde tarihler yüklenir
-        $("#teacherSelect").change(function () {
-            var teacherId = $(this).val();
-            var dateInput = document.getElementById("dateSelect");
+        function loadAvailableHours(teacherId, date) {
+            $("#timeSelect").empty().append('<option value="">Yükleniyor...</option>').prop("disabled", true);
 
-            if (flatpickrInstance) {
-                flatpickrInstance.destroy(); // Önceki flatpickr'yi kaldır
-            }
+            $.ajax({
+                url: '/LessonPlanning/GetAvailableHours',
+                type: 'GET',
+                data: { teacherId: teacherId, date: date },
+                success: function (hours) {
+                    if (hours && hours.length > 0) {
+                        $("#timeSelect").empty().append('<option value="">Saat Seçin</option>');
+                        hours.forEach(hour => {
+                            $("#timeSelect").append(`<option value="${hour}">${hour}</option>`);
+                        });
+                        $("#timeSelect").prop("disabled", false);
+                    } else {
+                        $("#timeSelect").empty().append('<option value="">Uygun saat yok</option>').prop("disabled", true);
+                        $("#message").html('<div class="alert alert-warning">Bu tarih için uygun saat bulunamadı.</div>');
+                    }
+                },
+                error: function () {
+                    $("#message").html('<div class="alert alert-danger">Saat bilgisi alınırken bir hata oluştu.</div>');
+                }
+            });
+        }
+
+        $("#teacherSelect").change(function () {
+            const teacherId = $(this).val();
+            const dateInput = document.getElementById("dateSelect");
+
+            if (flatpickrInstance) flatpickrInstance.destroy();
 
             $("#timeSelect").empty().append('<option value="">Önce tarih seçin</option>').prop("disabled", true);
 
             if (teacherId) {
-                $.getJSON('/LessonPlanning/GetAvailableDates', { teacherId: teacherId }, function (dates) {
-                    flatpickrInstance = flatpickr(dateInput, {
-                        enable: dates.map(date => new Date(date)), // Yalnızca uygun tarihleri etkinleştir
-                        dateFormat: "Y-m-d", // Tarih formatı
-                        onChange: function (selectedDates, dateStr) {
-                            if (selectedDates.length > 0) {
-                                loadAvailableHours(teacherId, dateStr);
+                $.getJSON('/LessonPlanning/GetAvailableDates', { teacherId }, function (dates) {
+                    if (dates && dates.length > 0) {
+                        flatpickrInstance = flatpickr(dateInput, {
+                            enable: dates.map(date => new Date(date)),
+                            dateFormat: "Y-m-d",
+                            onChange: function (selectedDates, dateStr) {
+                                if (selectedDates.length > 0) {
+                                    loadAvailableHours(teacherId, dateStr);
+                                }
                             }
-                        }
-                    });
-                    $("#dateSelect").prop("disabled", false); // Tarih alanını aktif et
+                        });
+                        $("#dateSelect").prop("disabled", false);
+                    } else {
+                        $("#dateSelect").val("").prop("disabled", true);
+                        $("#message").html('<div class="alert alert-warning">Müsait tarih bulunamadı.</div>');
+                    }
+                }).fail(function () {
+                    $("#message").html('<div class="alert alert-danger">Tarih bilgisi alınırken bir hata oluştu.</div>');
                 });
             } else {
-                $("#dateSelect").val("").prop("disabled", true); // Tarih alanını temizle ve pasif et
+                $("#dateSelect").val("").prop("disabled", true);
             }
         });
 
-        // Saatlerin yüklenmesi
-        function loadAvailableHours(teacherId, date) {
-            $("#timeSelect").empty().append('<option value="">Yükleniyor...</option>').prop("disabled", true);
+        $("#dateSelect").change(function () {
+            const teacherId = $("#teacherSelect").val();
+            const date = $(this).val();
+            if (teacherId && date) {
+                loadAvailableHours(teacherId, date);
+            }
+        });
 
-            $.getJSON('/LessonPlanning/GetAvailableHours', { teacherId: teacherId, date: date }, function (hours) {
-                if (hours.length > 0) {
-                    $("#timeSelect").empty().append('<option value="">Saat Seçin</option>');
-                    $.each(hours, function (index, hour) {
-                        $("#timeSelect").append('<option value="' + hour + '">' + hour + '</option>');
-                    });
-                    $("#timeSelect").prop("disabled", false);
-                } else {
-                    $("#timeSelect").empty().append('<option value="">Uygun saat yok</option>').prop("disabled", true);
-                    $("#message").html('<div class="alert alert-warning">Bu tarih için uygun saat bulunamadı.</div>');
-                }
-            }).fail(function () {
-                $("#message").html('<div class="alert alert-danger">Saat bilgisi alınırken bir hata oluştu.</div>');
-            });
-        }
-
-        // Ders ekleme işlemi
         $("#addLessonBtn").click(function () {
-            var teacherId = $("#teacherSelect").val();
-            var studentId = $("#studentSelect").val();
-            var date = $("#dateSelect").val();
-            var startTime = $("#timeSelect").val();
+            const teacherId = $("#teacherSelect").val();
+            const studentId = $("#studentSelect").val();
+            const date = $("#dateSelect").val();
+            const startTime = $("#timeSelect").val();
 
             if (teacherId && studentId && date && startTime) {
                 $.post('/LessonPlanning/AddLesson', { teacherId, studentId, date, startTime }, function (response) {
-                    var messageClass = response.success ? 'alert-success' : 'alert-danger';
+                    const messageClass = response.success ? 'alert-success' : 'alert-danger';
                     $("#message").html(`<div class="alert ${messageClass}">${response.message}</div>`);
 
-                    // Başarılı bir eklemeden sonra ders hakkını güncelle
                     if (response.success) {
                         let remainingHours = $(`#studentSelect option[value='${studentId}']`).data('hours');
                         remainingHours--;
                         $(`#studentSelect option[value='${studentId}']`).data('hours', remainingHours);
 
-                        // Ders hakkı biterse listeden kaldır
                         if (remainingHours <= 0) {
                             $(`#studentSelect option[value='${studentId}']`).remove();
                         }
@@ -140,19 +155,15 @@
             }
         });
 
-
-        // Seçimler yapıldığında butonu aktif et
         $("#studentSelect, #timeSelect").change(function () {
-            var isReady = $("#teacherSelect").val() && $("#studentSelect").val() && $("#dateSelect").val() && $("#timeSelect").val();
+            const isReady = $("#teacherSelect").val() && $("#studentSelect").val() && $("#dateSelect").val() && $("#timeSelect").val();
             $("#addLessonBtn").prop("disabled", !isReady);
         });
-            
-        // Öğrenci seçimi kontrolü
+
         $("#studentSelect").change(function () {
-            var studentId = $(this).val();
+            const studentId = $(this).val();
             if (studentId) {
-                // Kalan ders hakkını kontrol et
-                $.getJSON('/LessonPlanning/GetStudentCourseHours', { studentId: studentId }, function (response) {
+                $.getJSON('/LessonPlanning/GetStudentCourseHours', { studentId }, function (response) {
                     if (response.courseHours <= 0) {
                         $("#message").html('<div class="alert alert-danger">Bu öğrencinin ders hakkı kalmamış.</div>');
                         $("#addLessonBtn").prop("disabled", true);
@@ -165,9 +176,7 @@
                 $("#addLessonBtn").prop("disabled", true);
             }
         });
-
     });
 </script>
-
 
 

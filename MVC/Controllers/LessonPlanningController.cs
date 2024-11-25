@@ -29,14 +29,27 @@ namespace MVC.Controllers
         public async Task<IActionResult> GetAvailableDates(int teacherId)
         {
             var availableDates = await _teacherService.GetAvailableDatesAsync(teacherId);
+
+            if (availableDates == null || !availableDates.Any())
+            {
+                return Json(new { success = false, message = "Müsait tarih bulunamadı."});
+            }
+
             return Json(availableDates);
         }
 
         // Seçilen tarihe göre öğretmenin uygun saatlerini getir.
         public async Task<IActionResult> GetAvailableHours(int teacherId, DateTime date)
         {
-            var availableHours = await _teacherService.GetAvailableHoursAsync(teacherId, date);
-            return Json(availableHours);
+            try
+            {
+                var availableHours = await _teacherService.GetAvailableHoursAsync(teacherId, date);
+                return Json(availableHours);
+            }
+            catch (Exception ex)
+            {
+                return Json(new { success = false, message = ex.Message });
+            }
         }
 
         // Ders atama işlemi

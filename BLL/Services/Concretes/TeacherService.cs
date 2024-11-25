@@ -15,35 +15,6 @@ namespace BLL.Services.Concretes
             _studentRepository = studentRepository;
         }
 
-        //Ders ekleme işlemi
-        //public async Task<bool> AddLessonAsync(int teacherId, int studentId, DateTime date, TimeSpan startTime)
-        //{
-        //    //Çakışmayı kontrol et
-        //    if (!await IsTimeAvailableAsync(teacherId, date, startTime)) return false;
-
-        //    //Öğrencinin ders hakkını kontrol et
-        //    var student = await _studentRepository.GetAll().FirstOrDefaultAsync(s => s.ID == studentId);
-        //    if (student == null || student.CourseHours <= 0) return false;
-
-        //    //Ders programı ekle
-        //    var newSchedule = new Schedule
-        //    {
-        //        TeacherId = teacherId,
-        //        StudentId = studentId,
-        //        LessonDate = date,
-        //        StartTime = startTime,
-        //        Status = MODEL.Enums.DataStatus.Active
-        //    };
-
-        //    await _scheduleRepository.CreateAsync(newSchedule);
-
-        //    //Öğrencinin ders hakkını azalt
-        //    student.CourseHours -= 1;
-        //    await _studentRepository.UpdateAsync(student);
-
-        //    return true;
-        //}
-
         // Öğretmenlerin listesini getirir
         public async Task<List<Teacher>> GetAllTeachersAsync()
         {
@@ -53,17 +24,31 @@ namespace BLL.Services.Concretes
         // Müsait günler
         public async Task<List<DateTime>> GetAvailableDatesAsync(int teacherId)
         {
-            //Öğretmenin dolu günlerini getir
-            var busyDates = await _scheduleRepository.GetAll()
+            // Öğretmenin çalışma saatlerini tanımla
+            var workingHours = new List<TimeSpan>
+            {
+                new TimeSpan(8, 0, 0),
+                new TimeSpan(10, 0, 0),
+                new TimeSpan(13, 0, 0),
+                new TimeSpan(15, 0, 0),
+                new TimeSpan(17, 0, 0)
+            };
+
+            //Öğretmenin tüm planlanmış derslerini al
+            var schedules = await _scheduleRepository.GetAll()
                 .Where(s => s.TeacherId == teacherId)
-                .Select(s => s.LessonDate.Date)
-                .Distinct()
                 .ToListAsync();
-            
+            //Tüm tarihleri kontrol et
+            var busyDates = schedules
+                .GroupBy(s => s.LessonDate.Date) //Tarihe göre grupla
+                .Where(g => workingHours.All(hour => g.Any(s => s.StartTime == hour))) //Eğer tüm çalışma saatleri doluysa
+                .Select(g => g.Key) //Tarihi seç
+                .ToList();
+
             //Çalışma günlerinden dolu günleri çıkar
             var allDates = Enumerable.Range(0, 30)
                 .Select(offset => DateTime.Now.Date.AddDays(offset)) //30 gün ileriye kadar günleri kontrol et
-                .Except(busyDates)
+                .Except(busyDates) //Dolu günleri çıkar
                 .ToList();
 
             return allDates;
@@ -74,11 +59,11 @@ namespace BLL.Services.Concretes
         {
             var workingHours = new List<TimeSpan>
             {
-                new TimeSpan(8,0,0),
-                new TimeSpan(10,0,0),
-                new TimeSpan(13,0,0),
-                new TimeSpan(15,0,0),
-                new TimeSpan(17,0,0)
+                new TimeSpan(8, 0, 0),
+                new TimeSpan(10, 0, 0),
+                new TimeSpan(13, 0, 0),
+                new TimeSpan(15, 0, 0),
+                new TimeSpan(17, 0, 0)
             };
 
             //Dolu saatleri getir
