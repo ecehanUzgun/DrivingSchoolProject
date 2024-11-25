@@ -69,62 +69,62 @@ namespace DAL.Migrations
                         new
                         {
                             ID = 1,
-                            Address = "92998 Margarette Hollow, Bruenshire, Taiwan",
+                            Address = "4467 Leonie Greens, East Roy, Australia",
                             CreatedComputerName = "BILGIISLEM",
-                            CreatedDate = new DateTime(2024, 11, 22, 14, 7, 18, 232, DateTimeKind.Local).AddTicks(701),
-                            Name = "Lindgren, Welch and Funk",
-                            PhoneNumber = "3377609905",
+                            CreatedDate = new DateTime(2024, 11, 25, 10, 33, 17, 882, DateTimeKind.Local).AddTicks(6298),
+                            Name = "Hickle Group",
+                            PhoneNumber = "9228873651",
                             Status = 0
                         },
                         new
                         {
                             ID = 2,
-                            Address = "8995 Wisoky Ranch, Lakinville, Colombia",
+                            Address = "19753 Nestor Creek, Otisburgh, Philippines",
                             CreatedComputerName = "BILGIISLEM",
-                            CreatedDate = new DateTime(2024, 11, 22, 14, 7, 18, 232, DateTimeKind.Local).AddTicks(1738),
-                            Name = "Goyette, Batz and Schmitt",
-                            PhoneNumber = "0688446740",
+                            CreatedDate = new DateTime(2024, 11, 25, 10, 33, 17, 882, DateTimeKind.Local).AddTicks(9267),
+                            Name = "Champlin - Donnelly",
+                            PhoneNumber = "6432546520",
                             Status = 0
                         },
                         new
                         {
                             ID = 3,
-                            Address = "552 Renner Plaza, Parisianton, Nigeria",
+                            Address = "83950 Hilpert Common, East Madisonview, Martinique",
                             CreatedComputerName = "BILGIISLEM",
-                            CreatedDate = new DateTime(2024, 11, 22, 14, 7, 18, 232, DateTimeKind.Local).AddTicks(2057),
-                            Name = "Balistreri - Rodriguez",
-                            PhoneNumber = "3954950129",
+                            CreatedDate = new DateTime(2024, 11, 25, 10, 33, 17, 882, DateTimeKind.Local).AddTicks(9740),
+                            Name = "Torp, Reichel and Cormier",
+                            PhoneNumber = "0695450952",
                             Status = 0
                         },
                         new
                         {
                             ID = 4,
-                            Address = "6129 Ratke Skyway, Camylleville, New Zealand",
+                            Address = "82973 Gleichner Expressway, Valentinburgh, Turkmenistan",
                             CreatedComputerName = "BILGIISLEM",
-                            CreatedDate = new DateTime(2024, 11, 22, 14, 7, 18, 232, DateTimeKind.Local).AddTicks(2233),
-                            Name = "Smith Inc",
-                            PhoneNumber = "4488277562",
+                            CreatedDate = new DateTime(2024, 11, 25, 10, 33, 17, 882, DateTimeKind.Local).AddTicks(9984),
+                            Name = "Lueilwitz - Nikolaus",
+                            PhoneNumber = "9250639381",
                             Status = 0
                         },
                         new
                         {
                             ID = 5,
-                            Address = "26185 Mitchell Junction, Alexieberg, Saint Helena",
+                            Address = "08955 Olson Roads, New Jerald, Saint Martin",
                             CreatedComputerName = "BILGIISLEM",
-                            CreatedDate = new DateTime(2024, 11, 22, 14, 7, 18, 232, DateTimeKind.Local).AddTicks(6822),
-                            Name = "Effertz Inc",
-                            PhoneNumber = "1829243946",
+                            CreatedDate = new DateTime(2024, 11, 25, 10, 33, 17, 883, DateTimeKind.Local).AddTicks(177),
+                            Name = "Conroy - Christiansen",
+                            PhoneNumber = "8775573571",
                             Status = 0
                         });
                 });
 
             modelBuilder.Entity("MODEL.Entities.Schedule", b =>
                 {
-                    b.Property<int>("StudentId")
+                    b.Property<int>("ID")
+                        .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    b.Property<int>("TeacherId")
-                        .HasColumnType("int");
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("ID"));
 
                     b.Property<string>("CreatedComputerName")
                         .IsRequired()
@@ -142,15 +142,24 @@ namespace DAL.Migrations
                     b.Property<int>("Status")
                         .HasColumnType("int");
 
+                    b.Property<int>("StudentId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("TeacherId")
+                        .HasColumnType("int");
+
                     b.Property<string>("UpdatedComputerName")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<DateTime?>("UpdatedDate")
                         .HasColumnType("datetime2");
 
-                    b.HasKey("StudentId", "TeacherId");
+                    b.HasKey("ID");
 
-                    b.HasIndex("TeacherId");
+                    b.HasIndex("StudentId");
+
+                    b.HasIndex("TeacherId", "LessonDate", "StartTime")
+                        .IsUnique();
 
                     b.ToTable("Schedules");
                 });
@@ -214,262 +223,262 @@ namespace DAL.Migrations
                         new
                         {
                             ID = 1,
-                            BirthDate = new DateTime(1990, 1, 25, 5, 24, 3, 379, DateTimeKind.Local).AddTicks(3092),
-                            BranchId = 1,
+                            BirthDate = new DateTime(1994, 3, 11, 16, 56, 28, 262, DateTimeKind.Local).AddTicks(2688),
+                            BranchId = 3,
                             CourseHours = 6,
                             CreatedComputerName = "BILGIISLEM",
-                            CreatedDate = new DateTime(2024, 11, 22, 14, 7, 18, 236, DateTimeKind.Local).AddTicks(6252),
-                            Name = "Andres",
+                            CreatedDate = new DateTime(2024, 11, 25, 10, 33, 17, 887, DateTimeKind.Local).AddTicks(1665),
+                            Name = "Vivianne",
                             Status = 0,
-                            Surname = "Kertzmann",
-                            Tckn = "14958016265"
+                            Surname = "Huel",
+                            Tckn = "96643388934"
                         },
                         new
                         {
                             ID = 2,
-                            BirthDate = new DateTime(2005, 7, 5, 12, 25, 20, 784, DateTimeKind.Local).AddTicks(7814),
-                            BranchId = 5,
+                            BirthDate = new DateTime(1987, 9, 19, 23, 24, 17, 148, DateTimeKind.Local).AddTicks(8348),
+                            BranchId = 4,
                             CourseHours = 6,
                             CreatedComputerName = "BILGIISLEM",
-                            CreatedDate = new DateTime(2024, 11, 22, 14, 7, 18, 236, DateTimeKind.Local).AddTicks(8191),
-                            Name = "Brielle",
+                            CreatedDate = new DateTime(2024, 11, 25, 10, 33, 17, 887, DateTimeKind.Local).AddTicks(4472),
+                            Name = "Freeda",
                             Status = 0,
-                            Surname = "Labadie",
-                            Tckn = "49018703379"
+                            Surname = "Abernathy",
+                            Tckn = "58076284168"
                         },
                         new
                         {
                             ID = 3,
-                            BirthDate = new DateTime(1999, 11, 15, 13, 30, 33, 366, DateTimeKind.Local).AddTicks(24),
+                            BirthDate = new DateTime(2003, 6, 15, 5, 20, 15, 398, DateTimeKind.Local).AddTicks(6000),
                             BranchId = 2,
                             CourseHours = 6,
                             CreatedComputerName = "BILGIISLEM",
-                            CreatedDate = new DateTime(2024, 11, 22, 14, 7, 18, 236, DateTimeKind.Local).AddTicks(8257),
-                            Name = "Lucienne",
+                            CreatedDate = new DateTime(2024, 11, 25, 10, 33, 17, 887, DateTimeKind.Local).AddTicks(4555),
+                            Name = "Dariana",
                             Status = 0,
-                            Surname = "Erdman",
-                            Tckn = "78327486296"
+                            Surname = "Goodwin",
+                            Tckn = "36035212771"
                         },
                         new
                         {
                             ID = 4,
-                            BirthDate = new DateTime(2005, 1, 7, 21, 34, 9, 27, DateTimeKind.Local).AddTicks(202),
-                            BranchId = 4,
+                            BirthDate = new DateTime(1990, 3, 17, 16, 13, 2, 970, DateTimeKind.Local).AddTicks(9746),
+                            BranchId = 2,
                             CourseHours = 6,
                             CreatedComputerName = "BILGIISLEM",
-                            CreatedDate = new DateTime(2024, 11, 22, 14, 7, 18, 236, DateTimeKind.Local).AddTicks(8328),
-                            Name = "Bart",
+                            CreatedDate = new DateTime(2024, 11, 25, 10, 33, 17, 887, DateTimeKind.Local).AddTicks(4588),
+                            Name = "Zita",
                             Status = 0,
-                            Surname = "Emard",
-                            Tckn = "98373204263"
+                            Surname = "Pagac",
+                            Tckn = "42277549959"
                         },
                         new
                         {
                             ID = 5,
-                            BirthDate = new DateTime(2003, 4, 15, 21, 46, 44, 368, DateTimeKind.Local).AddTicks(8137),
+                            BirthDate = new DateTime(1991, 5, 18, 14, 31, 56, 84, DateTimeKind.Local).AddTicks(2553),
                             BranchId = 3,
                             CourseHours = 6,
                             CreatedComputerName = "BILGIISLEM",
-                            CreatedDate = new DateTime(2024, 11, 22, 14, 7, 18, 236, DateTimeKind.Local).AddTicks(8347),
-                            Name = "Robin",
+                            CreatedDate = new DateTime(2024, 11, 25, 10, 33, 17, 887, DateTimeKind.Local).AddTicks(4617),
+                            Name = "Jeffery",
                             Status = 0,
-                            Surname = "Romaguera",
-                            Tckn = "05043513866"
+                            Surname = "Leffler",
+                            Tckn = "28325702368"
                         },
                         new
                         {
                             ID = 6,
-                            BirthDate = new DateTime(2002, 5, 27, 18, 59, 37, 497, DateTimeKind.Local).AddTicks(1854),
+                            BirthDate = new DateTime(1993, 10, 13, 9, 19, 7, 937, DateTimeKind.Local).AddTicks(6745),
                             BranchId = 2,
                             CourseHours = 6,
                             CreatedComputerName = "BILGIISLEM",
-                            CreatedDate = new DateTime(2024, 11, 22, 14, 7, 18, 236, DateTimeKind.Local).AddTicks(8367),
-                            Name = "Hailee",
+                            CreatedDate = new DateTime(2024, 11, 25, 10, 33, 17, 887, DateTimeKind.Local).AddTicks(4643),
+                            Name = "Theodore",
                             Status = 0,
-                            Surname = "Doyle",
-                            Tckn = "37486985409"
+                            Surname = "Johns",
+                            Tckn = "22445623835"
                         },
                         new
                         {
                             ID = 7,
-                            BirthDate = new DateTime(1987, 6, 2, 17, 53, 3, 421, DateTimeKind.Local).AddTicks(8117),
-                            BranchId = 1,
+                            BirthDate = new DateTime(2004, 12, 30, 6, 18, 34, 958, DateTimeKind.Local).AddTicks(1582),
+                            BranchId = 4,
                             CourseHours = 6,
                             CreatedComputerName = "BILGIISLEM",
-                            CreatedDate = new DateTime(2024, 11, 22, 14, 7, 18, 236, DateTimeKind.Local).AddTicks(8390),
-                            Name = "Tyrell",
+                            CreatedDate = new DateTime(2024, 11, 25, 10, 33, 17, 887, DateTimeKind.Local).AddTicks(4667),
+                            Name = "Arthur",
                             Status = 0,
-                            Surname = "Gusikowski",
-                            Tckn = "61622583823"
+                            Surname = "Durgan",
+                            Tckn = "03465726170"
                         },
                         new
                         {
                             ID = 8,
-                            BirthDate = new DateTime(1997, 7, 2, 10, 33, 6, 409, DateTimeKind.Local).AddTicks(794),
-                            BranchId = 2,
+                            BirthDate = new DateTime(1993, 8, 4, 9, 16, 56, 918, DateTimeKind.Local).AddTicks(8272),
+                            BranchId = 5,
                             CourseHours = 6,
                             CreatedComputerName = "BILGIISLEM",
-                            CreatedDate = new DateTime(2024, 11, 22, 14, 7, 18, 236, DateTimeKind.Local).AddTicks(8411),
-                            Name = "Alexa",
+                            CreatedDate = new DateTime(2024, 11, 25, 10, 33, 17, 887, DateTimeKind.Local).AddTicks(4692),
+                            Name = "Toney",
                             Status = 0,
-                            Surname = "Considine",
-                            Tckn = "80951143787"
+                            Surname = "Buckridge",
+                            Tckn = "60755859590"
                         },
                         new
                         {
                             ID = 9,
-                            BirthDate = new DateTime(2003, 1, 13, 19, 46, 21, 631, DateTimeKind.Local).AddTicks(8227),
-                            BranchId = 5,
+                            BirthDate = new DateTime(1987, 11, 7, 12, 13, 52, 321, DateTimeKind.Local).AddTicks(2032),
+                            BranchId = 4,
                             CourseHours = 6,
                             CreatedComputerName = "BILGIISLEM",
-                            CreatedDate = new DateTime(2024, 11, 22, 14, 7, 18, 236, DateTimeKind.Local).AddTicks(8430),
-                            Name = "Kevon",
+                            CreatedDate = new DateTime(2024, 11, 25, 10, 33, 17, 887, DateTimeKind.Local).AddTicks(4717),
+                            Name = "Daren",
                             Status = 0,
-                            Surname = "Gutmann",
-                            Tckn = "02273223110"
+                            Surname = "Green",
+                            Tckn = "22295480320"
                         },
                         new
                         {
                             ID = 10,
-                            BirthDate = new DateTime(1991, 7, 14, 22, 27, 44, 925, DateTimeKind.Local).AddTicks(3129),
-                            BranchId = 1,
+                            BirthDate = new DateTime(1999, 8, 9, 8, 30, 37, 300, DateTimeKind.Local).AddTicks(6062),
+                            BranchId = 4,
                             CourseHours = 6,
                             CreatedComputerName = "BILGIISLEM",
-                            CreatedDate = new DateTime(2024, 11, 22, 14, 7, 18, 236, DateTimeKind.Local).AddTicks(8447),
-                            Name = "Jarrod",
+                            CreatedDate = new DateTime(2024, 11, 25, 10, 33, 17, 887, DateTimeKind.Local).AddTicks(4740),
+                            Name = "Duncan",
                             Status = 0,
-                            Surname = "Rowe",
-                            Tckn = "14596633767"
+                            Surname = "Considine",
+                            Tckn = "14227088071"
                         },
                         new
                         {
                             ID = 11,
-                            BirthDate = new DateTime(2005, 3, 31, 8, 23, 31, 975, DateTimeKind.Local).AddTicks(8449),
+                            BirthDate = new DateTime(1992, 8, 9, 6, 34, 31, 950, DateTimeKind.Local).AddTicks(3875),
                             BranchId = 2,
                             CourseHours = 6,
                             CreatedComputerName = "BILGIISLEM",
-                            CreatedDate = new DateTime(2024, 11, 22, 14, 7, 18, 236, DateTimeKind.Local).AddTicks(8468),
-                            Name = "Jadyn",
+                            CreatedDate = new DateTime(2024, 11, 25, 10, 33, 17, 887, DateTimeKind.Local).AddTicks(4763),
+                            Name = "Clark",
                             Status = 0,
-                            Surname = "Kessler",
-                            Tckn = "51781916388"
+                            Surname = "Lynch",
+                            Tckn = "42593651809"
                         },
                         new
                         {
                             ID = 12,
-                            BirthDate = new DateTime(1995, 10, 23, 19, 31, 52, 823, DateTimeKind.Local).AddTicks(244),
+                            BirthDate = new DateTime(2003, 10, 20, 19, 53, 18, 791, DateTimeKind.Local).AddTicks(6431),
                             BranchId = 3,
                             CourseHours = 6,
                             CreatedComputerName = "BILGIISLEM",
-                            CreatedDate = new DateTime(2024, 11, 22, 14, 7, 18, 236, DateTimeKind.Local).AddTicks(8485),
-                            Name = "Stewart",
+                            CreatedDate = new DateTime(2024, 11, 25, 10, 33, 17, 887, DateTimeKind.Local).AddTicks(4786),
+                            Name = "Al",
                             Status = 0,
-                            Surname = "Weissnat",
-                            Tckn = "36988494576"
+                            Surname = "Marquardt",
+                            Tckn = "93810558261"
                         },
                         new
                         {
                             ID = 13,
-                            BirthDate = new DateTime(1997, 12, 6, 10, 1, 20, 917, DateTimeKind.Local).AddTicks(6747),
+                            BirthDate = new DateTime(1996, 2, 19, 11, 26, 41, 69, DateTimeKind.Local).AddTicks(9769),
                             BranchId = 1,
                             CourseHours = 6,
                             CreatedComputerName = "BILGIISLEM",
-                            CreatedDate = new DateTime(2024, 11, 22, 14, 7, 18, 236, DateTimeKind.Local).AddTicks(8503),
-                            Name = "Ernestina",
+                            CreatedDate = new DateTime(2024, 11, 25, 10, 33, 17, 887, DateTimeKind.Local).AddTicks(4856),
+                            Name = "Santa",
                             Status = 0,
-                            Surname = "Stracke",
-                            Tckn = "86314191474"
+                            Surname = "Rutherford",
+                            Tckn = "86696630705"
                         },
                         new
                         {
                             ID = 14,
-                            BirthDate = new DateTime(2001, 6, 19, 6, 20, 55, 26, DateTimeKind.Local).AddTicks(7856),
-                            BranchId = 5,
+                            BirthDate = new DateTime(1995, 5, 24, 7, 57, 46, 476, DateTimeKind.Local).AddTicks(1248),
+                            BranchId = 3,
                             CourseHours = 6,
                             CreatedComputerName = "BILGIISLEM",
-                            CreatedDate = new DateTime(2024, 11, 22, 14, 7, 18, 236, DateTimeKind.Local).AddTicks(8522),
-                            Name = "Meggie",
+                            CreatedDate = new DateTime(2024, 11, 25, 10, 33, 17, 887, DateTimeKind.Local).AddTicks(4886),
+                            Name = "Wilhelm",
                             Status = 0,
-                            Surname = "Bartell",
-                            Tckn = "15988620503"
+                            Surname = "Rau",
+                            Tckn = "97615018440"
                         },
                         new
                         {
                             ID = 15,
-                            BirthDate = new DateTime(1996, 3, 11, 8, 14, 4, 550, DateTimeKind.Local).AddTicks(8526),
+                            BirthDate = new DateTime(1991, 10, 5, 7, 29, 53, 334, DateTimeKind.Local).AddTicks(395),
                             BranchId = 3,
                             CourseHours = 6,
                             CreatedComputerName = "BILGIISLEM",
-                            CreatedDate = new DateTime(2024, 11, 22, 14, 7, 18, 236, DateTimeKind.Local).AddTicks(8544),
-                            Name = "Tiffany",
+                            CreatedDate = new DateTime(2024, 11, 25, 10, 33, 17, 887, DateTimeKind.Local).AddTicks(4910),
+                            Name = "Gerardo",
                             Status = 0,
-                            Surname = "Marquardt",
-                            Tckn = "47213406818"
+                            Surname = "Emard",
+                            Tckn = "97749836486"
                         },
                         new
                         {
                             ID = 16,
-                            BirthDate = new DateTime(1996, 11, 8, 18, 55, 48, 846, DateTimeKind.Local).AddTicks(4634),
+                            BirthDate = new DateTime(1992, 10, 23, 5, 51, 38, 778, DateTimeKind.Local).AddTicks(9906),
                             BranchId = 2,
                             CourseHours = 6,
                             CreatedComputerName = "BILGIISLEM",
-                            CreatedDate = new DateTime(2024, 11, 22, 14, 7, 18, 236, DateTimeKind.Local).AddTicks(8562),
-                            Name = "Ernesto",
+                            CreatedDate = new DateTime(2024, 11, 25, 10, 33, 17, 887, DateTimeKind.Local).AddTicks(4935),
+                            Name = "Elenor",
                             Status = 0,
-                            Surname = "Smitham",
-                            Tckn = "18832562430"
+                            Surname = "Nolan",
+                            Tckn = "77228272987"
                         },
                         new
                         {
                             ID = 17,
-                            BirthDate = new DateTime(1998, 11, 19, 18, 16, 4, 403, DateTimeKind.Local).AddTicks(4546),
-                            BranchId = 1,
+                            BirthDate = new DateTime(1989, 9, 5, 23, 22, 21, 663, DateTimeKind.Local).AddTicks(6073),
+                            BranchId = 2,
                             CourseHours = 6,
                             CreatedComputerName = "BILGIISLEM",
-                            CreatedDate = new DateTime(2024, 11, 22, 14, 7, 18, 236, DateTimeKind.Local).AddTicks(8578),
-                            Name = "Arlene",
+                            CreatedDate = new DateTime(2024, 11, 25, 10, 33, 17, 887, DateTimeKind.Local).AddTicks(4957),
+                            Name = "Ethelyn",
                             Status = 0,
-                            Surname = "Lind",
-                            Tckn = "10339924593"
+                            Surname = "Gusikowski",
+                            Tckn = "43122344618"
                         },
                         new
                         {
                             ID = 18,
-                            BirthDate = new DateTime(2006, 5, 12, 7, 14, 49, 333, DateTimeKind.Local).AddTicks(7465),
-                            BranchId = 5,
+                            BirthDate = new DateTime(1999, 3, 10, 10, 33, 23, 831, DateTimeKind.Local).AddTicks(4201),
+                            BranchId = 3,
                             CourseHours = 6,
                             CreatedComputerName = "BILGIISLEM",
-                            CreatedDate = new DateTime(2024, 11, 22, 14, 7, 18, 236, DateTimeKind.Local).AddTicks(8596),
-                            Name = "Timmy",
+                            CreatedDate = new DateTime(2024, 11, 25, 10, 33, 17, 887, DateTimeKind.Local).AddTicks(4982),
+                            Name = "Joany",
                             Status = 0,
-                            Surname = "Murazik",
-                            Tckn = "43371533126"
+                            Surname = "Runolfsdottir",
+                            Tckn = "99976576815"
                         },
                         new
                         {
                             ID = 19,
-                            BirthDate = new DateTime(1992, 9, 8, 3, 1, 54, 742, DateTimeKind.Local).AddTicks(1495),
-                            BranchId = 2,
+                            BirthDate = new DateTime(1991, 6, 3, 17, 21, 54, 912, DateTimeKind.Local).AddTicks(101),
+                            BranchId = 3,
                             CourseHours = 6,
                             CreatedComputerName = "BILGIISLEM",
-                            CreatedDate = new DateTime(2024, 11, 22, 14, 7, 18, 236, DateTimeKind.Local).AddTicks(8616),
-                            Name = "Flo",
+                            CreatedDate = new DateTime(2024, 11, 25, 10, 33, 17, 887, DateTimeKind.Local).AddTicks(5009),
+                            Name = "Nelda",
                             Status = 0,
-                            Surname = "Auer",
-                            Tckn = "33423558776"
+                            Surname = "Kilback",
+                            Tckn = "79144889234"
                         },
                         new
                         {
                             ID = 20,
-                            BirthDate = new DateTime(1991, 3, 16, 1, 48, 27, 241, DateTimeKind.Local).AddTicks(1984),
-                            BranchId = 5,
+                            BirthDate = new DateTime(1990, 12, 29, 10, 25, 9, 517, DateTimeKind.Local).AddTicks(9235),
+                            BranchId = 3,
                             CourseHours = 6,
                             CreatedComputerName = "BILGIISLEM",
-                            CreatedDate = new DateTime(2024, 11, 22, 14, 7, 18, 236, DateTimeKind.Local).AddTicks(8633),
-                            Name = "Kobe",
+                            CreatedDate = new DateTime(2024, 11, 25, 10, 33, 17, 887, DateTimeKind.Local).AddTicks(5031),
+                            Name = "Micheal",
                             Status = 0,
-                            Surname = "Lehner",
-                            Tckn = "02250785013"
+                            Surname = "Kuhic",
+                            Tckn = "00441738038"
                         });
                 });
 
@@ -524,112 +533,112 @@ namespace DAL.Migrations
                         new
                         {
                             ID = 1,
-                            BirthDate = new DateTime(1993, 11, 11, 6, 1, 47, 784, DateTimeKind.Local).AddTicks(335),
+                            BirthDate = new DateTime(1970, 2, 7, 13, 15, 28, 217, DateTimeKind.Local).AddTicks(4595),
                             CreatedComputerName = "BILGIISLEM",
-                            CreatedDate = new DateTime(2024, 11, 22, 14, 7, 18, 235, DateTimeKind.Local).AddTicks(501),
-                            Name = "Jamil",
+                            CreatedDate = new DateTime(2024, 11, 25, 10, 33, 17, 884, DateTimeKind.Local).AddTicks(8869),
+                            Name = "Larue",
                             Status = 0,
-                            Surname = "Veum",
-                            Tckn = "35251139674"
+                            Surname = "Mraz",
+                            Tckn = "51194371835"
                         },
                         new
                         {
                             ID = 2,
-                            BirthDate = new DateTime(1999, 3, 26, 4, 4, 39, 318, DateTimeKind.Local).AddTicks(3951),
+                            BirthDate = new DateTime(1984, 10, 9, 8, 43, 45, 492, DateTimeKind.Local).AddTicks(8279),
                             CreatedComputerName = "BILGIISLEM",
-                            CreatedDate = new DateTime(2024, 11, 22, 14, 7, 18, 235, DateTimeKind.Local).AddTicks(2073),
-                            Name = "Shad",
+                            CreatedDate = new DateTime(2024, 11, 25, 10, 33, 17, 885, DateTimeKind.Local).AddTicks(1266),
+                            Name = "Macey",
                             Status = 0,
-                            Surname = "Feeney",
-                            Tckn = "47167362758"
+                            Surname = "Gorczany",
+                            Tckn = "21391359250"
                         },
                         new
                         {
                             ID = 3,
-                            BirthDate = new DateTime(1973, 10, 20, 23, 2, 17, 878, DateTimeKind.Local).AddTicks(7902),
+                            BirthDate = new DateTime(1979, 3, 3, 13, 6, 11, 574, DateTimeKind.Local).AddTicks(7701),
                             CreatedComputerName = "BILGIISLEM",
-                            CreatedDate = new DateTime(2024, 11, 22, 14, 7, 18, 235, DateTimeKind.Local).AddTicks(2137),
-                            Name = "Randi",
+                            CreatedDate = new DateTime(2024, 11, 25, 10, 33, 17, 885, DateTimeKind.Local).AddTicks(1360),
+                            Name = "Trevor",
                             Status = 0,
-                            Surname = "Dicki",
-                            Tckn = "23176272794"
+                            Surname = "Denesik",
+                            Tckn = "52449073819"
                         },
                         new
                         {
                             ID = 4,
-                            BirthDate = new DateTime(1987, 1, 18, 1, 3, 53, 98, DateTimeKind.Local).AddTicks(359),
+                            BirthDate = new DateTime(1994, 7, 9, 17, 50, 52, 726, DateTimeKind.Local).AddTicks(6848),
                             CreatedComputerName = "BILGIISLEM",
-                            CreatedDate = new DateTime(2024, 11, 22, 14, 7, 18, 235, DateTimeKind.Local).AddTicks(2159),
-                            Name = "Jillian",
+                            CreatedDate = new DateTime(2024, 11, 25, 10, 33, 17, 885, DateTimeKind.Local).AddTicks(1390),
+                            Name = "Genevieve",
                             Status = 0,
-                            Surname = "Fisher",
-                            Tckn = "73116014597"
+                            Surname = "Stark",
+                            Tckn = "85381286414"
                         },
                         new
                         {
                             ID = 5,
-                            BirthDate = new DateTime(1974, 5, 22, 20, 19, 21, 627, DateTimeKind.Local).AddTicks(2277),
+                            BirthDate = new DateTime(1982, 10, 7, 4, 39, 5, 479, DateTimeKind.Local).AddTicks(9149),
                             CreatedComputerName = "BILGIISLEM",
-                            CreatedDate = new DateTime(2024, 11, 22, 14, 7, 18, 235, DateTimeKind.Local).AddTicks(2178),
-                            Name = "Jonatan",
+                            CreatedDate = new DateTime(2024, 11, 25, 10, 33, 17, 885, DateTimeKind.Local).AddTicks(1416),
+                            Name = "Mekhi",
                             Status = 0,
-                            Surname = "Blanda",
-                            Tckn = "06361966448"
+                            Surname = "Wilderman",
+                            Tckn = "15791183446"
                         },
                         new
                         {
                             ID = 6,
-                            BirthDate = new DateTime(1997, 10, 5, 11, 25, 8, 328, DateTimeKind.Local).AddTicks(5975),
+                            BirthDate = new DateTime(1985, 3, 15, 15, 31, 37, 380, DateTimeKind.Local).AddTicks(9732),
                             CreatedComputerName = "BILGIISLEM",
-                            CreatedDate = new DateTime(2024, 11, 22, 14, 7, 18, 235, DateTimeKind.Local).AddTicks(2200),
-                            Name = "Guiseppe",
+                            CreatedDate = new DateTime(2024, 11, 25, 10, 33, 17, 885, DateTimeKind.Local).AddTicks(1447),
+                            Name = "Jarret",
                             Status = 0,
-                            Surname = "Lynch",
-                            Tckn = "58174158764"
+                            Surname = "Braun",
+                            Tckn = "71376903319"
                         },
                         new
                         {
                             ID = 7,
-                            BirthDate = new DateTime(1998, 10, 14, 0, 26, 52, 647, DateTimeKind.Local).AddTicks(7683),
+                            BirthDate = new DateTime(1980, 11, 4, 6, 48, 56, 877, DateTimeKind.Local).AddTicks(6793),
                             CreatedComputerName = "BILGIISLEM",
-                            CreatedDate = new DateTime(2024, 11, 22, 14, 7, 18, 235, DateTimeKind.Local).AddTicks(2218),
-                            Name = "Trudie",
+                            CreatedDate = new DateTime(2024, 11, 25, 10, 33, 17, 885, DateTimeKind.Local).AddTicks(1475),
+                            Name = "Maryse",
                             Status = 0,
-                            Surname = "Brakus",
-                            Tckn = "43306869133"
+                            Surname = "Zboncak",
+                            Tckn = "28789450793"
                         },
                         new
                         {
                             ID = 8,
-                            BirthDate = new DateTime(1987, 4, 5, 17, 38, 23, 58, DateTimeKind.Local).AddTicks(2903),
+                            BirthDate = new DateTime(1988, 12, 26, 9, 2, 29, 305, DateTimeKind.Local).AddTicks(5119),
                             CreatedComputerName = "BILGIISLEM",
-                            CreatedDate = new DateTime(2024, 11, 22, 14, 7, 18, 235, DateTimeKind.Local).AddTicks(2235),
-                            Name = "Elias",
+                            CreatedDate = new DateTime(2024, 11, 25, 10, 33, 17, 885, DateTimeKind.Local).AddTicks(1499),
+                            Name = "Lindsay",
                             Status = 0,
-                            Surname = "Donnelly",
-                            Tckn = "70527593908"
+                            Surname = "Luettgen",
+                            Tckn = "73637253410"
                         },
                         new
                         {
                             ID = 9,
-                            BirthDate = new DateTime(1972, 3, 10, 13, 31, 49, 639, DateTimeKind.Local).AddTicks(8188),
+                            BirthDate = new DateTime(1980, 9, 14, 14, 8, 18, 160, DateTimeKind.Local).AddTicks(2071),
                             CreatedComputerName = "BILGIISLEM",
-                            CreatedDate = new DateTime(2024, 11, 22, 14, 7, 18, 235, DateTimeKind.Local).AddTicks(2252),
-                            Name = "Moshe",
+                            CreatedDate = new DateTime(2024, 11, 25, 10, 33, 17, 885, DateTimeKind.Local).AddTicks(1521),
+                            Name = "Shirley",
                             Status = 0,
-                            Surname = "Roob",
-                            Tckn = "86112110274"
+                            Surname = "Wunsch",
+                            Tckn = "18555149241"
                         },
                         new
                         {
                             ID = 10,
-                            BirthDate = new DateTime(1975, 12, 21, 11, 19, 57, 314, DateTimeKind.Local).AddTicks(1967),
+                            BirthDate = new DateTime(1970, 8, 14, 5, 48, 6, 383, DateTimeKind.Local).AddTicks(8233),
                             CreatedComputerName = "BILGIISLEM",
-                            CreatedDate = new DateTime(2024, 11, 22, 14, 7, 18, 235, DateTimeKind.Local).AddTicks(2269),
-                            Name = "Cristal",
+                            CreatedDate = new DateTime(2024, 11, 25, 10, 33, 17, 885, DateTimeKind.Local).AddTicks(1543),
+                            Name = "Dianna",
                             Status = 0,
-                            Surname = "Kreiger",
-                            Tckn = "51589906127"
+                            Surname = "Boyer",
+                            Tckn = "96283930144"
                         });
                 });
 
@@ -740,13 +749,13 @@ namespace DAL.Migrations
                     b.HasOne("MODEL.Entities.Student", "Student")
                         .WithMany("Schedules")
                         .HasForeignKey("StudentId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
                     b.HasOne("MODEL.Entities.Teacher", "Teacher")
                         .WithMany("Schedules")
                         .HasForeignKey("TeacherId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
                     b.Navigation("Student");

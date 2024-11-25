@@ -165,6 +165,8 @@ namespace DAL.Migrations
                 name: "Schedules",
                 columns: table => new
                 {
+                    ID = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
                     TeacherId = table.Column<int>(type: "int", nullable: false),
                     StudentId = table.Column<int>(type: "int", nullable: false),
                     LessonDate = table.Column<DateTime>(type: "datetime2", nullable: false),
@@ -177,19 +179,19 @@ namespace DAL.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Schedules", x => new { x.StudentId, x.TeacherId });
+                    table.PrimaryKey("PK_Schedules", x => x.ID);
                     table.ForeignKey(
                         name: "FK_Schedules_Students_StudentId",
                         column: x => x.StudentId,
                         principalTable: "Students",
                         principalColumn: "ID",
-                        onDelete: ReferentialAction.Cascade);
+                        onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
                         name: "FK_Schedules_Teachers_TeacherId",
                         column: x => x.TeacherId,
                         principalTable: "Teachers",
                         principalColumn: "ID",
-                        onDelete: ReferentialAction.Cascade);
+                        onDelete: ReferentialAction.Restrict);
                 });
 
             migrationBuilder.InsertData(
@@ -197,11 +199,11 @@ namespace DAL.Migrations
                 columns: new[] { "ID", "Address", "CreatedComputerName", "CreatedDate", "Name", "PhoneNumber", "Status", "UpdatedComputerName", "UpdatedDate" },
                 values: new object[,]
                 {
-                    { 1, "92998 Margarette Hollow, Bruenshire, Taiwan", "BILGIISLEM", new DateTime(2024, 11, 22, 14, 7, 18, 232, DateTimeKind.Local).AddTicks(701), "Lindgren, Welch and Funk", "3377609905", 0, null, null },
-                    { 2, "8995 Wisoky Ranch, Lakinville, Colombia", "BILGIISLEM", new DateTime(2024, 11, 22, 14, 7, 18, 232, DateTimeKind.Local).AddTicks(1738), "Goyette, Batz and Schmitt", "0688446740", 0, null, null },
-                    { 3, "552 Renner Plaza, Parisianton, Nigeria", "BILGIISLEM", new DateTime(2024, 11, 22, 14, 7, 18, 232, DateTimeKind.Local).AddTicks(2057), "Balistreri - Rodriguez", "3954950129", 0, null, null },
-                    { 4, "6129 Ratke Skyway, Camylleville, New Zealand", "BILGIISLEM", new DateTime(2024, 11, 22, 14, 7, 18, 232, DateTimeKind.Local).AddTicks(2233), "Smith Inc", "4488277562", 0, null, null },
-                    { 5, "26185 Mitchell Junction, Alexieberg, Saint Helena", "BILGIISLEM", new DateTime(2024, 11, 22, 14, 7, 18, 232, DateTimeKind.Local).AddTicks(6822), "Effertz Inc", "1829243946", 0, null, null }
+                    { 1, "4467 Leonie Greens, East Roy, Australia", "BILGIISLEM", new DateTime(2024, 11, 25, 10, 33, 17, 882, DateTimeKind.Local).AddTicks(6298), "Hickle Group", "9228873651", 0, null, null },
+                    { 2, "19753 Nestor Creek, Otisburgh, Philippines", "BILGIISLEM", new DateTime(2024, 11, 25, 10, 33, 17, 882, DateTimeKind.Local).AddTicks(9267), "Champlin - Donnelly", "6432546520", 0, null, null },
+                    { 3, "83950 Hilpert Common, East Madisonview, Martinique", "BILGIISLEM", new DateTime(2024, 11, 25, 10, 33, 17, 882, DateTimeKind.Local).AddTicks(9740), "Torp, Reichel and Cormier", "0695450952", 0, null, null },
+                    { 4, "82973 Gleichner Expressway, Valentinburgh, Turkmenistan", "BILGIISLEM", new DateTime(2024, 11, 25, 10, 33, 17, 882, DateTimeKind.Local).AddTicks(9984), "Lueilwitz - Nikolaus", "9250639381", 0, null, null },
+                    { 5, "08955 Olson Roads, New Jerald, Saint Martin", "BILGIISLEM", new DateTime(2024, 11, 25, 10, 33, 17, 883, DateTimeKind.Local).AddTicks(177), "Conroy - Christiansen", "8775573571", 0, null, null }
                 });
 
             migrationBuilder.InsertData(
@@ -209,16 +211,16 @@ namespace DAL.Migrations
                 columns: new[] { "ID", "BirthDate", "CreatedComputerName", "CreatedDate", "Name", "Status", "Surname", "Tckn", "UpdatedComputerName", "UpdatedDate" },
                 values: new object[,]
                 {
-                    { 1, new DateTime(1993, 11, 11, 6, 1, 47, 784, DateTimeKind.Local).AddTicks(335), "BILGIISLEM", new DateTime(2024, 11, 22, 14, 7, 18, 235, DateTimeKind.Local).AddTicks(501), "Jamil", 0, "Veum", "35251139674", null, null },
-                    { 2, new DateTime(1999, 3, 26, 4, 4, 39, 318, DateTimeKind.Local).AddTicks(3951), "BILGIISLEM", new DateTime(2024, 11, 22, 14, 7, 18, 235, DateTimeKind.Local).AddTicks(2073), "Shad", 0, "Feeney", "47167362758", null, null },
-                    { 3, new DateTime(1973, 10, 20, 23, 2, 17, 878, DateTimeKind.Local).AddTicks(7902), "BILGIISLEM", new DateTime(2024, 11, 22, 14, 7, 18, 235, DateTimeKind.Local).AddTicks(2137), "Randi", 0, "Dicki", "23176272794", null, null },
-                    { 4, new DateTime(1987, 1, 18, 1, 3, 53, 98, DateTimeKind.Local).AddTicks(359), "BILGIISLEM", new DateTime(2024, 11, 22, 14, 7, 18, 235, DateTimeKind.Local).AddTicks(2159), "Jillian", 0, "Fisher", "73116014597", null, null },
-                    { 5, new DateTime(1974, 5, 22, 20, 19, 21, 627, DateTimeKind.Local).AddTicks(2277), "BILGIISLEM", new DateTime(2024, 11, 22, 14, 7, 18, 235, DateTimeKind.Local).AddTicks(2178), "Jonatan", 0, "Blanda", "06361966448", null, null },
-                    { 6, new DateTime(1997, 10, 5, 11, 25, 8, 328, DateTimeKind.Local).AddTicks(5975), "BILGIISLEM", new DateTime(2024, 11, 22, 14, 7, 18, 235, DateTimeKind.Local).AddTicks(2200), "Guiseppe", 0, "Lynch", "58174158764", null, null },
-                    { 7, new DateTime(1998, 10, 14, 0, 26, 52, 647, DateTimeKind.Local).AddTicks(7683), "BILGIISLEM", new DateTime(2024, 11, 22, 14, 7, 18, 235, DateTimeKind.Local).AddTicks(2218), "Trudie", 0, "Brakus", "43306869133", null, null },
-                    { 8, new DateTime(1987, 4, 5, 17, 38, 23, 58, DateTimeKind.Local).AddTicks(2903), "BILGIISLEM", new DateTime(2024, 11, 22, 14, 7, 18, 235, DateTimeKind.Local).AddTicks(2235), "Elias", 0, "Donnelly", "70527593908", null, null },
-                    { 9, new DateTime(1972, 3, 10, 13, 31, 49, 639, DateTimeKind.Local).AddTicks(8188), "BILGIISLEM", new DateTime(2024, 11, 22, 14, 7, 18, 235, DateTimeKind.Local).AddTicks(2252), "Moshe", 0, "Roob", "86112110274", null, null },
-                    { 10, new DateTime(1975, 12, 21, 11, 19, 57, 314, DateTimeKind.Local).AddTicks(1967), "BILGIISLEM", new DateTime(2024, 11, 22, 14, 7, 18, 235, DateTimeKind.Local).AddTicks(2269), "Cristal", 0, "Kreiger", "51589906127", null, null }
+                    { 1, new DateTime(1970, 2, 7, 13, 15, 28, 217, DateTimeKind.Local).AddTicks(4595), "BILGIISLEM", new DateTime(2024, 11, 25, 10, 33, 17, 884, DateTimeKind.Local).AddTicks(8869), "Larue", 0, "Mraz", "51194371835", null, null },
+                    { 2, new DateTime(1984, 10, 9, 8, 43, 45, 492, DateTimeKind.Local).AddTicks(8279), "BILGIISLEM", new DateTime(2024, 11, 25, 10, 33, 17, 885, DateTimeKind.Local).AddTicks(1266), "Macey", 0, "Gorczany", "21391359250", null, null },
+                    { 3, new DateTime(1979, 3, 3, 13, 6, 11, 574, DateTimeKind.Local).AddTicks(7701), "BILGIISLEM", new DateTime(2024, 11, 25, 10, 33, 17, 885, DateTimeKind.Local).AddTicks(1360), "Trevor", 0, "Denesik", "52449073819", null, null },
+                    { 4, new DateTime(1994, 7, 9, 17, 50, 52, 726, DateTimeKind.Local).AddTicks(6848), "BILGIISLEM", new DateTime(2024, 11, 25, 10, 33, 17, 885, DateTimeKind.Local).AddTicks(1390), "Genevieve", 0, "Stark", "85381286414", null, null },
+                    { 5, new DateTime(1982, 10, 7, 4, 39, 5, 479, DateTimeKind.Local).AddTicks(9149), "BILGIISLEM", new DateTime(2024, 11, 25, 10, 33, 17, 885, DateTimeKind.Local).AddTicks(1416), "Mekhi", 0, "Wilderman", "15791183446", null, null },
+                    { 6, new DateTime(1985, 3, 15, 15, 31, 37, 380, DateTimeKind.Local).AddTicks(9732), "BILGIISLEM", new DateTime(2024, 11, 25, 10, 33, 17, 885, DateTimeKind.Local).AddTicks(1447), "Jarret", 0, "Braun", "71376903319", null, null },
+                    { 7, new DateTime(1980, 11, 4, 6, 48, 56, 877, DateTimeKind.Local).AddTicks(6793), "BILGIISLEM", new DateTime(2024, 11, 25, 10, 33, 17, 885, DateTimeKind.Local).AddTicks(1475), "Maryse", 0, "Zboncak", "28789450793", null, null },
+                    { 8, new DateTime(1988, 12, 26, 9, 2, 29, 305, DateTimeKind.Local).AddTicks(5119), "BILGIISLEM", new DateTime(2024, 11, 25, 10, 33, 17, 885, DateTimeKind.Local).AddTicks(1499), "Lindsay", 0, "Luettgen", "73637253410", null, null },
+                    { 9, new DateTime(1980, 9, 14, 14, 8, 18, 160, DateTimeKind.Local).AddTicks(2071), "BILGIISLEM", new DateTime(2024, 11, 25, 10, 33, 17, 885, DateTimeKind.Local).AddTicks(1521), "Shirley", 0, "Wunsch", "18555149241", null, null },
+                    { 10, new DateTime(1970, 8, 14, 5, 48, 6, 383, DateTimeKind.Local).AddTicks(8233), "BILGIISLEM", new DateTime(2024, 11, 25, 10, 33, 17, 885, DateTimeKind.Local).AddTicks(1543), "Dianna", 0, "Boyer", "96283930144", null, null }
                 });
 
             migrationBuilder.InsertData(
@@ -226,32 +228,38 @@ namespace DAL.Migrations
                 columns: new[] { "ID", "BirthDate", "BranchId", "CourseHours", "CreatedComputerName", "CreatedDate", "Name", "Status", "Surname", "Tckn", "UpdatedComputerName", "UpdatedDate" },
                 values: new object[,]
                 {
-                    { 1, new DateTime(1990, 1, 25, 5, 24, 3, 379, DateTimeKind.Local).AddTicks(3092), 1, 6, "BILGIISLEM", new DateTime(2024, 11, 22, 14, 7, 18, 236, DateTimeKind.Local).AddTicks(6252), "Andres", 0, "Kertzmann", "14958016265", null, null },
-                    { 2, new DateTime(2005, 7, 5, 12, 25, 20, 784, DateTimeKind.Local).AddTicks(7814), 5, 6, "BILGIISLEM", new DateTime(2024, 11, 22, 14, 7, 18, 236, DateTimeKind.Local).AddTicks(8191), "Brielle", 0, "Labadie", "49018703379", null, null },
-                    { 3, new DateTime(1999, 11, 15, 13, 30, 33, 366, DateTimeKind.Local).AddTicks(24), 2, 6, "BILGIISLEM", new DateTime(2024, 11, 22, 14, 7, 18, 236, DateTimeKind.Local).AddTicks(8257), "Lucienne", 0, "Erdman", "78327486296", null, null },
-                    { 4, new DateTime(2005, 1, 7, 21, 34, 9, 27, DateTimeKind.Local).AddTicks(202), 4, 6, "BILGIISLEM", new DateTime(2024, 11, 22, 14, 7, 18, 236, DateTimeKind.Local).AddTicks(8328), "Bart", 0, "Emard", "98373204263", null, null },
-                    { 5, new DateTime(2003, 4, 15, 21, 46, 44, 368, DateTimeKind.Local).AddTicks(8137), 3, 6, "BILGIISLEM", new DateTime(2024, 11, 22, 14, 7, 18, 236, DateTimeKind.Local).AddTicks(8347), "Robin", 0, "Romaguera", "05043513866", null, null },
-                    { 6, new DateTime(2002, 5, 27, 18, 59, 37, 497, DateTimeKind.Local).AddTicks(1854), 2, 6, "BILGIISLEM", new DateTime(2024, 11, 22, 14, 7, 18, 236, DateTimeKind.Local).AddTicks(8367), "Hailee", 0, "Doyle", "37486985409", null, null },
-                    { 7, new DateTime(1987, 6, 2, 17, 53, 3, 421, DateTimeKind.Local).AddTicks(8117), 1, 6, "BILGIISLEM", new DateTime(2024, 11, 22, 14, 7, 18, 236, DateTimeKind.Local).AddTicks(8390), "Tyrell", 0, "Gusikowski", "61622583823", null, null },
-                    { 8, new DateTime(1997, 7, 2, 10, 33, 6, 409, DateTimeKind.Local).AddTicks(794), 2, 6, "BILGIISLEM", new DateTime(2024, 11, 22, 14, 7, 18, 236, DateTimeKind.Local).AddTicks(8411), "Alexa", 0, "Considine", "80951143787", null, null },
-                    { 9, new DateTime(2003, 1, 13, 19, 46, 21, 631, DateTimeKind.Local).AddTicks(8227), 5, 6, "BILGIISLEM", new DateTime(2024, 11, 22, 14, 7, 18, 236, DateTimeKind.Local).AddTicks(8430), "Kevon", 0, "Gutmann", "02273223110", null, null },
-                    { 10, new DateTime(1991, 7, 14, 22, 27, 44, 925, DateTimeKind.Local).AddTicks(3129), 1, 6, "BILGIISLEM", new DateTime(2024, 11, 22, 14, 7, 18, 236, DateTimeKind.Local).AddTicks(8447), "Jarrod", 0, "Rowe", "14596633767", null, null },
-                    { 11, new DateTime(2005, 3, 31, 8, 23, 31, 975, DateTimeKind.Local).AddTicks(8449), 2, 6, "BILGIISLEM", new DateTime(2024, 11, 22, 14, 7, 18, 236, DateTimeKind.Local).AddTicks(8468), "Jadyn", 0, "Kessler", "51781916388", null, null },
-                    { 12, new DateTime(1995, 10, 23, 19, 31, 52, 823, DateTimeKind.Local).AddTicks(244), 3, 6, "BILGIISLEM", new DateTime(2024, 11, 22, 14, 7, 18, 236, DateTimeKind.Local).AddTicks(8485), "Stewart", 0, "Weissnat", "36988494576", null, null },
-                    { 13, new DateTime(1997, 12, 6, 10, 1, 20, 917, DateTimeKind.Local).AddTicks(6747), 1, 6, "BILGIISLEM", new DateTime(2024, 11, 22, 14, 7, 18, 236, DateTimeKind.Local).AddTicks(8503), "Ernestina", 0, "Stracke", "86314191474", null, null },
-                    { 14, new DateTime(2001, 6, 19, 6, 20, 55, 26, DateTimeKind.Local).AddTicks(7856), 5, 6, "BILGIISLEM", new DateTime(2024, 11, 22, 14, 7, 18, 236, DateTimeKind.Local).AddTicks(8522), "Meggie", 0, "Bartell", "15988620503", null, null },
-                    { 15, new DateTime(1996, 3, 11, 8, 14, 4, 550, DateTimeKind.Local).AddTicks(8526), 3, 6, "BILGIISLEM", new DateTime(2024, 11, 22, 14, 7, 18, 236, DateTimeKind.Local).AddTicks(8544), "Tiffany", 0, "Marquardt", "47213406818", null, null },
-                    { 16, new DateTime(1996, 11, 8, 18, 55, 48, 846, DateTimeKind.Local).AddTicks(4634), 2, 6, "BILGIISLEM", new DateTime(2024, 11, 22, 14, 7, 18, 236, DateTimeKind.Local).AddTicks(8562), "Ernesto", 0, "Smitham", "18832562430", null, null },
-                    { 17, new DateTime(1998, 11, 19, 18, 16, 4, 403, DateTimeKind.Local).AddTicks(4546), 1, 6, "BILGIISLEM", new DateTime(2024, 11, 22, 14, 7, 18, 236, DateTimeKind.Local).AddTicks(8578), "Arlene", 0, "Lind", "10339924593", null, null },
-                    { 18, new DateTime(2006, 5, 12, 7, 14, 49, 333, DateTimeKind.Local).AddTicks(7465), 5, 6, "BILGIISLEM", new DateTime(2024, 11, 22, 14, 7, 18, 236, DateTimeKind.Local).AddTicks(8596), "Timmy", 0, "Murazik", "43371533126", null, null },
-                    { 19, new DateTime(1992, 9, 8, 3, 1, 54, 742, DateTimeKind.Local).AddTicks(1495), 2, 6, "BILGIISLEM", new DateTime(2024, 11, 22, 14, 7, 18, 236, DateTimeKind.Local).AddTicks(8616), "Flo", 0, "Auer", "33423558776", null, null },
-                    { 20, new DateTime(1991, 3, 16, 1, 48, 27, 241, DateTimeKind.Local).AddTicks(1984), 5, 6, "BILGIISLEM", new DateTime(2024, 11, 22, 14, 7, 18, 236, DateTimeKind.Local).AddTicks(8633), "Kobe", 0, "Lehner", "02250785013", null, null }
+                    { 1, new DateTime(1994, 3, 11, 16, 56, 28, 262, DateTimeKind.Local).AddTicks(2688), 3, 6, "BILGIISLEM", new DateTime(2024, 11, 25, 10, 33, 17, 887, DateTimeKind.Local).AddTicks(1665), "Vivianne", 0, "Huel", "96643388934", null, null },
+                    { 2, new DateTime(1987, 9, 19, 23, 24, 17, 148, DateTimeKind.Local).AddTicks(8348), 4, 6, "BILGIISLEM", new DateTime(2024, 11, 25, 10, 33, 17, 887, DateTimeKind.Local).AddTicks(4472), "Freeda", 0, "Abernathy", "58076284168", null, null },
+                    { 3, new DateTime(2003, 6, 15, 5, 20, 15, 398, DateTimeKind.Local).AddTicks(6000), 2, 6, "BILGIISLEM", new DateTime(2024, 11, 25, 10, 33, 17, 887, DateTimeKind.Local).AddTicks(4555), "Dariana", 0, "Goodwin", "36035212771", null, null },
+                    { 4, new DateTime(1990, 3, 17, 16, 13, 2, 970, DateTimeKind.Local).AddTicks(9746), 2, 6, "BILGIISLEM", new DateTime(2024, 11, 25, 10, 33, 17, 887, DateTimeKind.Local).AddTicks(4588), "Zita", 0, "Pagac", "42277549959", null, null },
+                    { 5, new DateTime(1991, 5, 18, 14, 31, 56, 84, DateTimeKind.Local).AddTicks(2553), 3, 6, "BILGIISLEM", new DateTime(2024, 11, 25, 10, 33, 17, 887, DateTimeKind.Local).AddTicks(4617), "Jeffery", 0, "Leffler", "28325702368", null, null },
+                    { 6, new DateTime(1993, 10, 13, 9, 19, 7, 937, DateTimeKind.Local).AddTicks(6745), 2, 6, "BILGIISLEM", new DateTime(2024, 11, 25, 10, 33, 17, 887, DateTimeKind.Local).AddTicks(4643), "Theodore", 0, "Johns", "22445623835", null, null },
+                    { 7, new DateTime(2004, 12, 30, 6, 18, 34, 958, DateTimeKind.Local).AddTicks(1582), 4, 6, "BILGIISLEM", new DateTime(2024, 11, 25, 10, 33, 17, 887, DateTimeKind.Local).AddTicks(4667), "Arthur", 0, "Durgan", "03465726170", null, null },
+                    { 8, new DateTime(1993, 8, 4, 9, 16, 56, 918, DateTimeKind.Local).AddTicks(8272), 5, 6, "BILGIISLEM", new DateTime(2024, 11, 25, 10, 33, 17, 887, DateTimeKind.Local).AddTicks(4692), "Toney", 0, "Buckridge", "60755859590", null, null },
+                    { 9, new DateTime(1987, 11, 7, 12, 13, 52, 321, DateTimeKind.Local).AddTicks(2032), 4, 6, "BILGIISLEM", new DateTime(2024, 11, 25, 10, 33, 17, 887, DateTimeKind.Local).AddTicks(4717), "Daren", 0, "Green", "22295480320", null, null },
+                    { 10, new DateTime(1999, 8, 9, 8, 30, 37, 300, DateTimeKind.Local).AddTicks(6062), 4, 6, "BILGIISLEM", new DateTime(2024, 11, 25, 10, 33, 17, 887, DateTimeKind.Local).AddTicks(4740), "Duncan", 0, "Considine", "14227088071", null, null },
+                    { 11, new DateTime(1992, 8, 9, 6, 34, 31, 950, DateTimeKind.Local).AddTicks(3875), 2, 6, "BILGIISLEM", new DateTime(2024, 11, 25, 10, 33, 17, 887, DateTimeKind.Local).AddTicks(4763), "Clark", 0, "Lynch", "42593651809", null, null },
+                    { 12, new DateTime(2003, 10, 20, 19, 53, 18, 791, DateTimeKind.Local).AddTicks(6431), 3, 6, "BILGIISLEM", new DateTime(2024, 11, 25, 10, 33, 17, 887, DateTimeKind.Local).AddTicks(4786), "Al", 0, "Marquardt", "93810558261", null, null },
+                    { 13, new DateTime(1996, 2, 19, 11, 26, 41, 69, DateTimeKind.Local).AddTicks(9769), 1, 6, "BILGIISLEM", new DateTime(2024, 11, 25, 10, 33, 17, 887, DateTimeKind.Local).AddTicks(4856), "Santa", 0, "Rutherford", "86696630705", null, null },
+                    { 14, new DateTime(1995, 5, 24, 7, 57, 46, 476, DateTimeKind.Local).AddTicks(1248), 3, 6, "BILGIISLEM", new DateTime(2024, 11, 25, 10, 33, 17, 887, DateTimeKind.Local).AddTicks(4886), "Wilhelm", 0, "Rau", "97615018440", null, null },
+                    { 15, new DateTime(1991, 10, 5, 7, 29, 53, 334, DateTimeKind.Local).AddTicks(395), 3, 6, "BILGIISLEM", new DateTime(2024, 11, 25, 10, 33, 17, 887, DateTimeKind.Local).AddTicks(4910), "Gerardo", 0, "Emard", "97749836486", null, null },
+                    { 16, new DateTime(1992, 10, 23, 5, 51, 38, 778, DateTimeKind.Local).AddTicks(9906), 2, 6, "BILGIISLEM", new DateTime(2024, 11, 25, 10, 33, 17, 887, DateTimeKind.Local).AddTicks(4935), "Elenor", 0, "Nolan", "77228272987", null, null },
+                    { 17, new DateTime(1989, 9, 5, 23, 22, 21, 663, DateTimeKind.Local).AddTicks(6073), 2, 6, "BILGIISLEM", new DateTime(2024, 11, 25, 10, 33, 17, 887, DateTimeKind.Local).AddTicks(4957), "Ethelyn", 0, "Gusikowski", "43122344618", null, null },
+                    { 18, new DateTime(1999, 3, 10, 10, 33, 23, 831, DateTimeKind.Local).AddTicks(4201), 3, 6, "BILGIISLEM", new DateTime(2024, 11, 25, 10, 33, 17, 887, DateTimeKind.Local).AddTicks(4982), "Joany", 0, "Runolfsdottir", "99976576815", null, null },
+                    { 19, new DateTime(1991, 6, 3, 17, 21, 54, 912, DateTimeKind.Local).AddTicks(101), 3, 6, "BILGIISLEM", new DateTime(2024, 11, 25, 10, 33, 17, 887, DateTimeKind.Local).AddTicks(5009), "Nelda", 0, "Kilback", "79144889234", null, null },
+                    { 20, new DateTime(1990, 12, 29, 10, 25, 9, 517, DateTimeKind.Local).AddTicks(9235), 3, 6, "BILGIISLEM", new DateTime(2024, 11, 25, 10, 33, 17, 887, DateTimeKind.Local).AddTicks(5031), "Micheal", 0, "Kuhic", "00441738038", null, null }
                 });
 
             migrationBuilder.CreateIndex(
-                name: "IX_Schedules_TeacherId",
+                name: "IX_Schedules_StudentId",
                 table: "Schedules",
-                column: "TeacherId");
+                column: "StudentId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Schedules_TeacherId_LessonDate_StartTime",
+                table: "Schedules",
+                columns: new[] { "TeacherId", "LessonDate", "StartTime" },
+                unique: true);
 
             migrationBuilder.CreateIndex(
                 name: "IX_Students_BranchId",
