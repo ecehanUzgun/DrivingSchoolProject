@@ -8,21 +8,38 @@ namespace MVC.Controllers
         private readonly ITeacherService _teacherService;
         private readonly IStudentService _studentService;
         private readonly IScheduleService _scheduleService;
-        public LessonPlanningController(ITeacherService teacherService, IStudentService studentService, IScheduleService scheduleService)
+        private readonly IBranchService _branchService;
+        public LessonPlanningController(ITeacherService teacherService, IStudentService studentService, IScheduleService scheduleService, IBranchService branchService)
         {
             _teacherService = teacherService;
             _studentService = studentService;
             _scheduleService = scheduleService;
+            _branchService = branchService;
         }
 
         // Ana ekran: Öğretmen seçimi, tarih ve saat işlemleri
         public async Task<IActionResult> Index()
         {
+            var branches = await _branchService.GetAllBranchesAsync();
             var teachers = await _teacherService.GetAllTeachersAsync();
-            var students = _studentService.GetStudentsWithRemainingHours();
+            var students =  _studentService.GetStudentsWithRemainingHours();
             ViewBag.Teachers = teachers;
             ViewBag.Students = students;    
+            ViewBag.Branches = branches;
             return View();
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> GetStudentsByBranch(int? branchId)
+        {
+            var students = await _branchService.GetStudentsByBranchId(branchId);
+            return Json(students.Select(s => new
+            {
+                id = s.ID,
+                name = s.Name,
+                surname = s.Surname,
+                courseHours = s.CourseHours
+            }));
         }
 
         // Seçilen öğretmenin uygun tarihlerini getir

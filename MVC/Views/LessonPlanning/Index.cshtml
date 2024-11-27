@@ -1,14 +1,12 @@
-﻿
-@{
+﻿@{
     ViewData["Title"] = "Index";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-
 <div class="container mt-4">
     <h2>Ders Planlama</h2>
     <!-- Öğretmen Seçimi -->
-    <div class="form-group">
+    <div class="form-group mt-3">
         <label for="teacherSelect">Öğretmen Seçin:</label>
         <select id="teacherSelect" class="form-control">
             <option value="">Öğretmen Seçin</option>
@@ -33,6 +31,18 @@
         </select>
     </div>
 
+    <!-- Şube Seçimi -->
+    <div class="form-group mt-3">
+        <label for="branchSelect">Şube Seçin:</label>
+        <select id="branchSelect" class="form-control">
+            <option value="">Tüm Şubeler</option>
+            @foreach (var branch in ViewBag.Branches)
+            {
+                <option value="@branch.ID">@branch.Name</option>
+            }
+        </select>
+    </div>
+
     <!-- Öğrenci Seçimi -->
     <div class="form-group mt-3">
         <label for="studentSelect">Öğrenci Seçin:</label>
@@ -49,7 +59,7 @@
     </div>
 
     <!-- Ders Ekle Butonu -->
-    <button id="addLessonBtn" class="btn btn-primary mt-3" disabled>Ders Ata</button>
+    <button id="addLessonBtn" class="btn btn-primary mt-3" disabled>Program Oluştur</button>
 
     <!-- Mesaj Gösterimi -->
     <div id="message" class="mt-3"></div>
@@ -160,6 +170,8 @@
             $("#addLessonBtn").prop("disabled", !isReady);
         });
 
+        //Şube Seçimi
+
         $("#studentSelect").change(function () {
             const studentId = $(this).val();
             if (studentId) {
@@ -178,5 +190,4 @@
         });
     });
 </script>
-
 
