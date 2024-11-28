@@ -77,12 +77,15 @@ namespace BLL.Services.Concretes
         }
 
         //Ders çakışmasını kontrol et
-        public async Task<bool> IsTimeAvailableAsync(int teacherId, DateTime date, TimeSpan startTime)
+        public async Task<bool> IsTimeAvailableAsync(int teacherId, int studentId,DateTime date, TimeSpan startTime)
         {
-            var isBusy = await _scheduleRepository.GetAll()
+            var isTeacherBusy = await _scheduleRepository.GetAll()
                 .AnyAsync(s => s.TeacherId == teacherId && s.LessonDate.Date == date.Date && s.StartTime == startTime);
 
-            return !isBusy;
+            var isStudentBusy = await _scheduleRepository.GetAll()
+                .AnyAsync(s => s.StudentId == studentId && s.LessonDate == date.Date && s.StartTime == startTime);
+
+            return !(isStudentBusy || isTeacherBusy);
         }
     }
 }

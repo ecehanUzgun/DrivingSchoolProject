@@ -69,12 +69,20 @@ namespace MVC.Controllers
             }
         }
 
-        // Ders atama işlemi
         [HttpPost]
         public async Task<IActionResult> AddLesson(int teacherId, int studentId, DateTime date, TimeSpan startTime)
         {
             try
             {
+                // Hem öğretmen hem de öğrenci için çakışma kontrolü
+                var isTimeAvailable = await _teacherService.IsTimeAvailableAsync(teacherId, studentId, date, startTime);
+
+                if (!isTimeAvailable)
+                {
+                    return Json(new { success = false, message = "Seçilen tarih ve saatte öğrencinin zaten dersi var." });
+                }
+
+                // Eğer çakışma yoksa dersi ekle
                 var result = await _scheduleService.AddLessonAsync(teacherId, studentId, date, startTime);
                 if (result)
                 {
@@ -87,11 +95,12 @@ namespace MVC.Controllers
             }
             catch (Exception ex)
             {
-                // Detaylı hata mesajını loglayın
+                // Hata mesajını loglayın ve kullanıcıya döndürün
                 Console.WriteLine(ex.Message);
                 Console.WriteLine("Inner Exception: " + ex.InnerException?.Message);
                 return Json(new { success = false, message = "Bir hata oluştu: " + ex.Message });
             }
         }
+
     }
 }
