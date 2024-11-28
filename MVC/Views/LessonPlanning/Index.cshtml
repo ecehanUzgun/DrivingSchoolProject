@@ -70,9 +70,9 @@
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
 <script>
     $(document).ready(function () {
-        // Eğer öğretmen seçilmişse ve tarih mevcutsa tekrar saatleri yükle
         let flatpickrInstance;
 
+        // Saatlerin yüklenmesi
         function loadAvailableHours(teacherId, date) {
             $("#timeSelect").empty().append('<option value="">Yükleniyor...</option>').prop("disabled", true);
 
@@ -98,6 +98,7 @@
             });
         }
 
+        // Öğretmen seçildiğinde tarihler yüklenir
         $("#teacherSelect").change(function () {
             const teacherId = $(this).val();
             const dateInput = document.getElementById("dateSelect");
@@ -139,6 +140,7 @@
             }
         });
 
+        // Ders Planlama Butonu
         $("#addLessonBtn").click(function () {
             const teacherId = $("#teacherSelect").val();
             const studentId = $("#studentSelect").val();
@@ -158,6 +160,7 @@
                         if (remainingHours <= 0) {
                             $(`#studentSelect option[value='${studentId}']`).remove();
                         }
+                        resetForm(false); //Form sıfırla, ancak mesaj alanını temizleme
                     }
                 }).fail(function () {
                     $("#message").html('<div class="alert alert-danger">Bir hata oluştu, lütfen tekrar deneyin.</div>');
@@ -165,29 +168,54 @@
             }
         });
 
+        // Form sıfırlama
+        function resetForm(clearMessage = true) {
+            $("#teacherSelect").val("");
+            $("#dateSelect").val("").prop("disabled", true);
+            $("#timeSelect").empty().append('<option value="">Önce tarih seçin</option>').prop("disabled", true);
+            $("#branchSelect").val("");
+            $("#studentSelect").empty().append('<option value="">Önce şube seçin</option>');
+            $("#addLessonBtn").prop("disabled", true);
+
+            // Mesaj alanını isteğe bağlı temizle
+            if (clearMessage) {
+                $("#message").html("");
+            }
+        }
+        
+        // Öğrenci seçimi kontrolü
         $("#studentSelect, #timeSelect").change(function () {
             const isReady = $("#teacherSelect").val() && $("#studentSelect").val() && $("#dateSelect").val() && $("#timeSelect").val();
             $("#addLessonBtn").prop("disabled", !isReady);
         });
 
-        //Şube Seçimi
+        // Şube Seçimi
+        $("#branchSelect").change(function () {
+            const branchId = $(this).val();
+            $("#studentSelect").empty().append('<option value="">Yükleniyor...</option>');
 
-        $("#studentSelect").change(function () {
-            const studentId = $(this).val();
-            if (studentId) {
-                $.getJSON('/LessonPlanning/GetStudentCourseHours', { studentId }, function (response) {
-                    if (response.courseHours <= 0) {
-                        $("#message").html('<div class="alert alert-danger">Bu öğrencinin ders hakkı kalmamış.</div>');
-                        $("#addLessonBtn").prop("disabled", true);
+            $.ajax({
+                url: '/LessonPlanning/GetStudentsByBranch',
+                type: 'GET',
+                data: { branchId },
+                success: function (students) {
+                    if (students && students.length > 0) {
+                        $("#studentSelect").empty().append('<option value="">Öğrenci Seçin</option>');
+                        students.forEach(student => {
+                            $("#studentSelect").append(
+                                `<option value="${student.id}" data-hours="${student.courseHours}">
+                                        ${student.name} ${student.surname} (${student.courseHours} saat kaldı)
+                                    </option>`
+                            );
+                        });
                     } else {
-                        $("#message").empty();
-                        $("#addLessonBtn").prop("disabled", false);
+                        $("#studentSelect").empty().append('<option value="">Bu şubede öğrenci yok</option>');
                     }
-                });
-            } else {
-                $("#addLessonBtn").prop("disabled", true);
-            }
+                },
+                error: function () {
+                    $("#message").html('<div class="alert alert-danger">Öğrenci bilgisi alınırken bir hata oluştu.</div>');
+                }
+            });
         });
     });
 </script>
-
