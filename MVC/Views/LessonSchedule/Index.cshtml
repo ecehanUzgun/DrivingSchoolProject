@@ -1,0 +1,115 @@
+﻿@model List<MODEL.Entities.Schedule>
+@{
+    ViewData["Title"] = "Ders Programı";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h1>Ders Programı</h1>
+
+<!-- Filtreleme Seçenekleri -->
+<div class="mb-3">
+    <div class="row">
+        <div class="col-md-6">
+            <select id="teacherFilter" class="form-control">
+                <option value="">Tüm Öğretmenler</option>
+                @foreach (var teacher in ViewBag.Teachers)
+                {
+                    <option value="@teacher.ID">@teacher.Name</option>
+                }
+            </select>
+        </div>
+        <div class="col-md-6">
+            <select id="studentFilter" class="form-control">
+                <option value="">Tüm Öğrenciler</option>
+                @foreach (var student in ViewBag.Students)
+                {
+                    <option value="@student.ID">@student.Name</option>
+                }
+            </select>
+        </div>
+    </div>
+</div>
+
+<!-- Ders Programı Tablosu -->
+<table class="table table-striped" id="lessonScheduleTable">
+    <thead>
+        <tr>
+            <th>Eğitmen</th>
+            <th>Öğrenci</th>
+            <th>Tarih</th>
+            <th>Saat</th>
+            <th>Kalan Ders Hakkı</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var schedule in Model)
+        {
+            <tr>
+                <td>@schedule.Teacher?.Name</td>
+                <td>@schedule.Student?.Name</td>
+                <td>@schedule.LessonDate.ToString("dd.MM.yyyy")</td>
+                <td>@schedule.StartTime</td>
+                <td>@schedule.Student?.CourseHours</td>
+            </tr>
+        }
+    </tbody>
+</table>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script>
+    $(document).ready(function () {
+        // Filtreleme işlemini dinle
+        $("#teacherFilter, #studentFilter").change(function () {
+            let teacherId = $("#teacherFilter").val();
+            let studentId = $("#studentFilter").val();
+
+            // Boş değerler null olarak gönderilsin
+            teacherId = teacherId === "" ? null : teacherId;
+            studentId = studentId === "" ? null : studentId;
+
+            $.ajax({
+                url: '@Url.Action("FilterLessonSchedules", "LessonSchedule")',
+                type: 'GET',
+                data: { teacherId: teacherId, studentId: studentId },
+                success: function (data) {
+                    console.log(data);
+                    renderTable(data);
+                },
+                error: function () {
+                    alert("Filtreleme sırasında bir hata oluştu.");
+                }
+            });
+        });
+
+        // Tabloyu güncelleme fonksiyonu
+        function renderTable(data) {
+            const tbody = $("#lessonScheduleTable tbody");
+            tbody.empty();
+
+            if (data.length > 0) {
+                data.forEach(schedule => {
+                    const teacher = schedule.teacher || "Bilinmiyor";
+                    const student = schedule.student || "Bilinmiyor";
+                    const lessonDate = schedule.lessonDate || "Bilinmiyor";
+                    const startTime = schedule.startTime || "Bilinmiyor";
+                    const courseHours = schedule.courseHours || "Bilinmiyor";
+
+                    tbody.append(`
+                            <tr>
+                                <td>${teacher}</td>
+                                <td>${student}</td>
+                                <td>${lessonDate}</td>
+                                <td>${startTime}</td>
+                                <td>${courseHours}</td>
+                            </tr>
+                        `);
+                });
+            } else {
+                tbody.append(`
+                        <tr>
+                            <td colspan="5" class="text-center">Ders programı bulunamadı.</td>
+                        </tr>
+                    `);
+            }
+        }
+    });
+</script>

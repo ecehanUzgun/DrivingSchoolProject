@@ -18,5 +18,7 @@ namespace BLL.Services.Abstracts
         Task UpdateLessonStatus(int scheduleId, DataStatus status);
 
         Task<bool> AddLessonAsync(int teacherId, int studentId, DateTime date, TimeSpan startTime); 
+
+        Task<List<Schedule>> GetAllSchedulesWithDetailAsync();
     }
 }

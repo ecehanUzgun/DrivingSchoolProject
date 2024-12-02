@@ -54,6 +54,14 @@ namespace BLL.Services.Concretes
             return GetAll();
         }
 
+        public async Task<List<Schedule>> GetAllSchedulesWithDetailAsync()
+        {
+            return await _repository.GetAll()
+                .Include(s => s.Teacher)
+                .Include(s => s.Student)
+                .ToListAsync();
+        }
+
         public IEnumerable<Schedule> GetSchedulesByStudent(int studentId)
         {
             return GetAll().Where(s => s.StudentId == studentId);
