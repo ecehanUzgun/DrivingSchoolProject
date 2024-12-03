@@ -1,0 +1,40 @@
+﻿@model Branch
+@{
+    ViewData["Title"] = "Create";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@if (TempData["Error"] != null)
+{
+    <div class="alert alert-danger">
+        <span>@TempData["Error"]</span>
+    </div>
+}
+
+<div class="row">
+    <div class="col-md-6 mx-auto">
+        <div class="card">
+            <div class="card-header">
+                <h3>Şube Oluştur</h3>
+            </div>
+            <div class="card-body">
+                <form method="post">
+                    <div>
+                        <label>Şube</label>
+                        <input type="text" class="form-control" asp-for="Name" />
+                    </div>
+                    <div>
+                        <label>Adres</label>
+                        <input type="text" class="form-control" asp-for="Address" />
+                    </div>
+                    <div>
+                        <label>Telefon Numarası</label>
+                        <input type="tel" class="form-control" asp-for="PhoneNumber" />
+                    </div>
+                    <button class="btn btn-primary mt-2">Oluştur</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+

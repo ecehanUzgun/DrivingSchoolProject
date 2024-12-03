@@ -1,4 +1,4 @@
-﻿@model List<Student>
+﻿@model List<Branch>
 @{
     ViewData["Title"] = "Index";
     Layout = "~/Views/Shared/_Layout.cshtml";
@@ -11,28 +11,24 @@
     </div>
 }
 
-
 <div class="row">
     <div class="card mb-4">
         <div class="card-header">
             <div class="d-flex justify-content-between">
                 <div>
                     <i class="fas fa-table me-1"></i>
-                    Öğrenci Listesi
+                    Şube Listesi
                 </div>
-
-                <a asp-action="Create" asp-controller="Student" class="btn btn-success">Yeni Öğrenci</a>
+                <a asp-action="Create" asp-controller="Branch" class="btn btn-success">Yeni Şube</a>
             </div>
         </div>
         <div class="card-body">
             <table class="table table-hover">
                 <thead>
                     <tr>
-                        <th>Öğrenci Adı</th>
-                        <th>Öğrenci Soyadı</th>
-                        <th>TCKN</th>
-                        <th>Doğum Tarihi</th>
-                        <th>Ders Hakkı</th>
+                        <th>Şube</th>
+                        <th>Adres</th>
+                        <th>Telefon Numarası</th>
                         <th></th>
                     </tr>
                 </thead>
@@ -42,10 +38,8 @@
                     {
                         <tr>
                             <td>@item.Name</td>
-                            <td>@item.Surname</td>
-                            <td>@item.Tckn</td>
-                            <td>@item.BirthDate.ToString("dd.MM.yyyy")</td>
-                            <td>@item.CourseHours</td>
+                            <td>@item.Address</td>
+                            <td>@item.PhoneNumber</td>
                             <td>
                                 <a asp-action="Update" asp-route-id="@item.ID" class="btn btn-sm btn-warning">Güncelle</a>
                                 <a asp-action="Delete" asp-route-id="@item.ID" class="btn btn-sm btn-danger">Sil</a>
@@ -53,6 +47,9 @@
                         </tr>
                     }
                 </tbody>
+            </table>
         </div>
     </div>
 </div>
+
+

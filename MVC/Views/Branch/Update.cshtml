@@ -1,0 +1,38 @@
+﻿@model Branch
+@{
+    ViewData["Title"] = "Update";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="row">
+    <div class="col-md-6 mx-auto">
+        <div class="card">
+            <div class="card-header">
+                <h3>Şube Bilgisi Güncelleme</h3>
+            </div>
+            <div class="card-body">
+                <form asp-action="Update" asp-controller="Branch" method="post" enctype="multipart/form-data">
+                    <input asp-for="ID" type="hidden" />
+                    <div>
+                        <label>Şube</label>
+                        <input type="text" class="form-control" value="@Model.Name" asp-for="Name" />
+                    </div>
+                    <div>
+                        <label>Telefon Numarası</label>
+                        <input type="tel" class="form-control" value="@Model.PhoneNumber" asp-for="PhoneNumber"/>
+                    </div>
+                    <div>
+                        <label>Adres</label>
+                        <textarea cols="5" rows="7" class="form-control" value="@Model.Address" asp-for="Address">
+
+                        </textarea>
+                    </div>
+                    
+                    <button type="submit" class="btn btn-primary mt-2">Güncelle</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+
