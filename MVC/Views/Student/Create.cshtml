@@ -1,0 +1,56 @@
+﻿@model Student
+@{
+    ViewData["Title"] = "Create";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@if (TempData["Error"] != null)
+{
+    <div class="alert alert-danger">
+        <span>@TempData["Error"]</span>
+    </div>
+}
+
+<div class="row">
+    <div class="col-md-6 mx-auto">
+        <div class="card">
+            <div class="card-header">
+                <h3>Öğrenci Oluştur</h3>
+            </div>
+            <div class="card-body">
+                <form method="post">
+                    <div>
+                        <label>Ad</label>
+                        <input type="text" class="form-control" asp-for="Name" />
+                    </div>
+                    <div>
+                        <label>Soyad</label>
+                        <input type="text" class="form-control" asp-for="Surname" />
+                    </div>
+                    <div>
+                        <label>Tckn</label>
+                        <input type="number" class="form-control" asp-for="Tckn" />
+                    </div>
+                    <div>
+                        <label>Doğum Tarihi</label>
+                        <input type="date" class="form-control" asp-for="BirthDate" />
+                    </div>
+                    <div>
+                        <label>Şube</label>
+                        <select asp-for="BranchId" class="form-select">
+                            <option value="">Şube Seçin</option>
+                            @foreach (var branch in ViewBag.Branches)
+                            {
+                                <option value="@branch.ID">@branch.Name</option>
+                            }
+                        </select>
+                    </div>
+                    <button class="btn btn-primary mt-2">Oluştur</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+

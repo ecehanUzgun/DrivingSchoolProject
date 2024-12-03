@@ -1,0 +1,49 @@
+﻿@model Student
+@{
+    ViewData["Title"] = "Update";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="row">
+    <div class="col-md-6 mx-auto">
+        <div class="card">
+            <div class="card-header">
+                <h3>Öğrenci Güncelle</h3>
+            </div>
+            <div class="card-body">
+                <form asp-action="Update" asp-controller="Student" method="post" enctype="multipart/form-data">
+                    <input asp-for="ID" type="hidden" />
+                    <div>
+                        <label>Ad</label>
+                        <input type="text" class="form-control" value="@Model.Name" asp-for="Name" />
+                    </div>
+                    <div>
+                        <label>Soyad</label>
+                        <input type="text" class="form-control" value="@Model.Surname" asp-for="Surname" />
+                    </div>
+                    <div>
+                        <label>Tckn</label>
+                        <input type="number" class="form-control" value="@Model.Tckn" asp-for="Tckn" />
+                    </div>
+                    <div>
+                        <label>Doğum Tarihi</label>
+                        <input type="date" class="form-control" value="@Model.BirthDate" asp-for="BirthDate" />
+                    </div>
+                    <div>
+                        <label>Şube</label>
+                        <select asp-for="BranchId" class="form-select">
+                            <option value="">Şube Seçin</option>
+                            @foreach (var branch in ViewBag.Branches)
+                            {
+                                <option value="@branch.ID">@branch.Name</option>
+                            }
+                        </select>
+                    </div>
+                    <button type="submit" class="btn btn-primary mt-2">Güncelle</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+
